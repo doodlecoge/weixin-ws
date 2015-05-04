@@ -16,6 +16,7 @@
         <config.location></config.location>
         <config.filename>weixin-ws.properties</config.filename>
         <log.level>info</log.level>
+        <log.file>weixin-ws.log</log.file>
     </properties>
 
     <dependencies>
