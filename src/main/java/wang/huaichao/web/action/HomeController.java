@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import wang.huaichao.AppInitializer;
 
+import java.util.Calendar;
+
 /**
  * Created by Administrator on 2015/5/4.
  */
@@ -45,5 +47,11 @@ public class HomeController {
             log.error("===", e);
         }
         return "error";
+    }
+
+    @RequestMapping("/test")
+    @ResponseBody
+    public String test() {
+        return "test" + Calendar.getInstance().getTimeInMillis();
     }
 }
