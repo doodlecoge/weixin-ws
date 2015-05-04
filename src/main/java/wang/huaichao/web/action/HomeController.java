@@ -22,7 +22,7 @@ public class HomeController {
     private static final Logger log = LoggerFactory.getLogger(HomeController.class);
 
     @ResponseBody
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping("/index")
     public String index(@RequestParam String msg_signature,
                         @RequestParam String timestamp,
                         @RequestParam String nonce,
