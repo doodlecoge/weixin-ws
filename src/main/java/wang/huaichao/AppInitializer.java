@@ -17,12 +17,15 @@ public class AppInitializer implements ServletContextListener {
         if (!new File(root).exists()) {
             throw new RuntimeException("get app root failed: " + root);
         }
-        AppConfig = ConfigLoader.load(root + File.separator + "app.properties");
+        AppConfig = ConfigLoader.loadFromClassPath("/app.properties");
         String location = AppConfig.getString("config.location");
         String filename = AppConfig.getString("config.filename");
         if (location.isEmpty()) location = root;
         if (!new File(location + File.separator + filename).exists()) {
-            throw new RuntimeException("weixin-ws.properties does not exists");
+            throw new RuntimeException(
+                    "weixin-ws.properties does not exists: " +
+                            location + File.separator + filename
+            );
         }
         WeiXinConfig = ConfigLoader.load(location + File.separator + filename);
     }

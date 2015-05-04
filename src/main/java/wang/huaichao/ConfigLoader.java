@@ -23,15 +23,37 @@ public class ConfigLoader {
         Properties properties = new Properties();
         try {
             properties.load(new FileInputStream(path));
-            final Config config = new Config();
-            final Set<String> kesy = properties.stringPropertyNames();
-            for (String key : kesy) {
-                config.add(key, properties.getProperty(key));
-            }
-            configs.put(path, config);
-            return config;
         } catch (IOException e) {
             throw new RuntimeException("loading config failed " + path, e);
         }
+        final Config config = createConfig(properties);
+        configs.put(path, config);
+        return config;
     }
+
+
+    public static Config loadFromClassPath(String path) {
+        if (configs.containsKey(path)) return configs.get(path);
+
+        Properties properties = new Properties();
+        try {
+            properties.load(ConfigLoader.class.getResourceAsStream(path));
+        } catch (IOException e) {
+            throw new RuntimeException("loading config failed " + path, e);
+        }
+        final Config config = createConfig(properties);
+        configs.put(path, config);
+        return config;
+    }
+
+    private static Config createConfig(Properties properties) {
+        final Config config = new Config();
+        final Set<String> kesy = properties.stringPropertyNames();
+        for (String key : kesy) {
+            config.add(key, properties.getProperty(key));
+        }
+        return config;
+    }
+
+
 }
