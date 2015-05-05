@@ -1,6 +1,7 @@
 package wang.huaichao.wx;
 
-import com.sun.xml.internal.bind.marshaller.CharacterEscapeHandler;
+
+import com.sun.xml.bind.marshaller.CharacterEscapeHandler;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -109,7 +110,7 @@ public class WeiXinMessage {
         JAXBContext jaxbContext = JAXBContext.newInstance(WeiXinMessage.class);
         Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
         jaxbMarshaller.setProperty(
-                "com.sun.xml.internal.bind.characterEscapeHandler",
+                "com.sun.xml.bind.marshaller.CharacterEscapeHandler",
                 new CharacterEscapeHandler() {
                     @Override
                     public void escape(char[] ch, int start, int length,
