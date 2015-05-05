@@ -1,4 +1,4 @@
-package wang.huaichao;
+package wang.huaichao.utils;
 
 import com.google.gson.Gson;
 

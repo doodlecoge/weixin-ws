@@ -1,4 +1,4 @@
-package wang.huaichao;
+package wang.huaichao.misc;
 
 import java.util.HashMap;
 import java.util.Map;

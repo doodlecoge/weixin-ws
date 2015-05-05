@@ -1,4 +1,4 @@
-package wang.huaichao;
+package wang.huaichao.misc;
 
 import java.io.FileInputStream;
 import java.io.IOException;

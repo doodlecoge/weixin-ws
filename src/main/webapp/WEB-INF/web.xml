@@ -19,7 +19,7 @@
     </listener>
 
     <listener>
-        <listener-class>wang.huaichao.AppInitializer</listener-class>
+        <listener-class>wang.huaichao.misc.AppInitializer</listener-class>
     </listener>
 
 
