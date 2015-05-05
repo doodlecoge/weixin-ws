@@ -67,20 +67,6 @@ public class HomeController {
         try {
             WeiXinMessage msg = WeiXinMessage.getInstance(xml);
 
-
-//            {
-//                "touser": "UserID1|UserID2|UserID3",
-//                    "toparty": " PartyID1 | PartyID2 ",
-//                    "totag": " TagID1 | TagID2 ",
-//                    "msgtype": "text",
-//                    "agentid": "1",
-//                    "text": {
-//                "content": "Holiday Request For Pony(http://xxxxx)"
-//            },
-//                "safe":"0"
-//            }
-
-
             final String sJson = WeiXinUtils.buildTextMsg(
                     Arrays.asList(msg.getFromUserName()),
                     null,
@@ -102,7 +88,7 @@ public class HomeController {
             _updateAccessToken();
         } else {
             final long duaration = Calendar.getInstance().getTimeInMillis() - tokenGetTime;
-            if (duaration > accessToken.getExpiresIn()) {
+            if (duaration / 1000 > accessToken.getExpiresIn()) {
                 _updateAccessToken();
             }
         }
