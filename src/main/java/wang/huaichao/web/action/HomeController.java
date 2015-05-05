@@ -58,6 +58,7 @@ public class HomeController {
     @RequestMapping("/test")
     @ResponseBody
     public String test() {
-        return "test" + Calendar.getInstance().getTimeInMillis();
+        return "test, " + Calendar.getInstance().getTimeInMillis() + ", " +
+                AppInitializer.AppConfig.getString("app.version");
     }
 }
