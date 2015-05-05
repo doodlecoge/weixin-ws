@@ -1,5 +1,7 @@
 package wang.huaichao;
 
+import wang.huaichao.wx.WeiXinUtils;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.io.File;
@@ -28,6 +30,7 @@ public class AppInitializer implements ServletContextListener {
             );
         }
         WeiXinConfig = ConfigLoader.load(location + File.separator + filename);
+        WeiXinUtils.init();
     }
 
     @Override
