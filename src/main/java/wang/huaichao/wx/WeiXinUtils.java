@@ -1,10 +1,21 @@
 package wang.huaichao.wx;
 
+import com.google.gson.JsonObject;
 import com.qq.weixin.mp.aes.AesException;
 import com.qq.weixin.mp.aes.WXBizMsgCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import wang.huaichao.AppInitializer;
+import wang.huaichao.net.HttpUtils;
+import wang.huaichao.utils.StringUtils;
+
+import javax.net.ssl.HttpsURLConnection;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.util.List;
 
 /**
  * Created by Administrator on 2015/5/5.
@@ -15,6 +26,9 @@ public class WeiXinUtils {
     private static final String sToken = AppInitializer.WeiXinConfig.getString("wx.token");
     private static final String sEncodingAESKey = AppInitializer.WeiXinConfig.getString("wx.encoding_aes_key");
     private static final String sCorpID = AppInitializer.WeiXinConfig.getString("wx.corp_id");
+    private static final String sSecret = AppInitializer.WeiXinConfig.getString("wx.secret");
+    public static final String sAccessToken = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=" + sCorpID + "&corpsecret=" + sSecret;
+    public static final String sPostMsgUrl = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=";
 
     private static WXBizMsgCrypt WeiXinCrypt = null;
 
@@ -64,5 +78,85 @@ public class WeiXinUtils {
             log.error(data);
             throw e;
         }
+    }
+
+    public static String EncryptMsg(String data,
+                                    String timestamp,
+                                    String nonce) throws AesException {
+        try {
+            return WeiXinCrypt.EncryptMsg(
+                    data, timestamp, nonce
+            );
+        } catch (AesException e) {
+            log.error("failed to encrypt message", e);
+            log.error(data);
+            log.error(timestamp);
+            log.error(nonce);
+            throw e;
+        }
+    }
+
+    public static String getAccessToken() throws IOException {
+        try {
+            final HttpUtils httpUtils = new HttpUtils();
+            return httpUtils.get(sAccessToken);
+        } catch (IOException e) {
+            log.error("get access token failed", e);
+            throw e;
+        }
+    }
+
+    public static String postMessage(String sAccessToken, String data) throws IOException {
+        final HttpUtils httpUtils = new HttpUtils();
+        try {
+            return httpUtils.post(sPostMsgUrl + sAccessToken, data);
+        } catch (IOException e) {
+            log.error("post message failed: " + data);
+            throw e;
+        }
+    }
+
+    public static String buildTextMsg(List<String> toUsers,
+                                      List<String> toParties,
+                                      List<String> toTags,
+                                      MessageType type,
+                                      String agentId,
+                                      String content) {
+        final JsonObject txt = new JsonObject();
+        txt.addProperty("content", content);
+
+        final JsonObject jobj = _buildCommonMsg(toUsers, toParties, toTags, type, agentId);
+        jobj.add("text", txt);
+
+        return jobj.toString();
+    }
+
+    private static JsonObject _buildCommonMsg(List<String> toUsers,
+                                              List<String> toParties,
+                                              List<String> toTags,
+                                              MessageType type,
+                                              String agentId) {
+        final JsonObject jobj = new JsonObject();
+        if (toUsers != null && toUsers.size() > 0) {
+            jobj.addProperty("touser", StringUtils.join(toUsers, "|"));
+        }
+
+        if (toParties != null && toParties.size() > 0) {
+            jobj.addProperty("toparty", StringUtils.join(toParties, "|"));
+        }
+
+        if (toTags != null && toTags.size() > 0) {
+            jobj.addProperty("totag", StringUtils.join(toTags, "|"));
+        }
+
+        jobj.addProperty("msgtype", type.name());
+        jobj.addProperty("agentid", agentId);
+        jobj.addProperty("safe", 0);
+
+        return jobj;
+    }
+
+    public static enum MessageType {
+        text, image, voice, video, file, news, mpnews
     }
 }
