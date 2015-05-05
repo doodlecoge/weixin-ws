@@ -7,10 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wang.huaichao.misc.AppInitializer;
 import wang.huaichao.utils.GsonUtils;
-import wang.huaichao.wx.AccessToken;
-import wang.huaichao.wx.WeiXinMessage;
-import wang.huaichao.wx.WeiXinUtils;
+import wang.huaichao.wx.*;
 
+import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -53,25 +52,45 @@ public class HomeController {
                 );
                 log.info(msg);
 
-                echo(msg);
-            } catch (AesException e) {
+                WeiXinMessageBase msgObj = WeiXinMessageBase.getInstance(msg);
+                msgObj.getMsgType();
 
+                if (msgObj instanceof WeiXinTextMessage)
+                    _echo((WeiXinTextMessage) msgObj);
+                else if (msgObj instanceof WeiXinEventMessage) {
+                    final WeiXinEventMessage obj = (WeiXinEventMessage) msgObj;
+                    final String sJson = WeiXinUtils.buildTextMsg(
+                            Arrays.asList(obj.getFromUserName()),
+                            null,
+                            null,
+                            WeiXinMessageType.valueOf(obj.getMsgType()),
+                            obj.getAgentId(),
+                            obj.getEvent() + obj.getEventKey() + ": "
+                                    + Calendar.getInstance().getTime()
+                    );
+                    final String resp = WeiXinUtils.postMessage(_getAccessToken(), sJson);
+                    System.out.println(resp);
+                }
+            } catch (AesException e) {
+                log.error("", e);
+            } catch (JAXBException e) {
+                log.error("", e);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
 
         return null;
     }
 
-    private void echo(String xml) {
-
+    private void _echo(WeiXinTextMessage msg) {
         try {
-            WeiXinMessage msg = WeiXinMessage.getInstance(xml);
 
             final String sJson = WeiXinUtils.buildTextMsg(
                     Arrays.asList(msg.getFromUserName()),
                     null,
                     null,
-                    WeiXinUtils.MessageType.valueOf(msg.getMsgType()),
+                    WeiXinMessageType.valueOf(msg.getMsgType()),
                     msg.getAgentId(),
                     msg.getContent() + ": " + Calendar.getInstance().getTime()
             );

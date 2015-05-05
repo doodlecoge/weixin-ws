@@ -114,7 +114,7 @@ public class WeiXinUtils {
     public static String buildTextMsg(List<String> toUsers,
                                       List<String> toParties,
                                       List<String> toTags,
-                                      MessageType type,
+                                      WeiXinMessageType type,
                                       String agentId,
                                       String content) {
         final JsonObject txt = new JsonObject();
@@ -129,7 +129,7 @@ public class WeiXinUtils {
     private static JsonObject _buildCommonMsg(List<String> toUsers,
                                               List<String> toParties,
                                               List<String> toTags,
-                                              MessageType type,
+                                              WeiXinMessageType type,
                                               String agentId) {
         final JsonObject jobj = new JsonObject();
         if (toUsers != null && toUsers.size() > 0) {
@@ -151,7 +151,4 @@ public class WeiXinUtils {
         return jobj;
     }
 
-    public static enum MessageType {
-        text, image, voice, video, file, news, mpnews
-    }
 }

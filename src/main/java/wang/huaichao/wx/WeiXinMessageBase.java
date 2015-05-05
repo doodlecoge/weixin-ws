@@ -1,6 +1,5 @@
 package wang.huaichao.wx;
 
-
 import com.sun.xml.bind.marshaller.CharacterEscapeHandler;
 
 import javax.xml.bind.JAXBContext;
@@ -20,10 +19,9 @@ import java.io.Writer;
 /**
  * Created by Administrator on 2015/5/5.
  */
-
 @XmlRootElement(name = "xml")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class WeiXinMessage {
+public class WeiXinMessageBase {
     @XmlElement(name = "ToUserName")
     @XmlJavaTypeAdapter(WeiXinMessageTypeAdapter.class)
     private String toUserName;
@@ -38,10 +36,6 @@ public class WeiXinMessage {
     @XmlElement(name = "MsgType")
     @XmlJavaTypeAdapter(WeiXinMessageTypeAdapter.class)
     private String msgType;
-
-    @XmlElement(name = "Content")
-    @XmlJavaTypeAdapter(WeiXinMessageTypeAdapter.class)
-    private String content;
 
     @XmlElement(name = "MsgId")
     private String msgId;
@@ -82,14 +76,6 @@ public class WeiXinMessage {
         this.msgType = msgType;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
     public String getMsgId() {
         return msgId;
     }
@@ -107,14 +93,14 @@ public class WeiXinMessage {
     }
 
     public String toXml() throws JAXBException {
-        JAXBContext jaxbContext = JAXBContext.newInstance(WeiXinMessage.class);
+        JAXBContext jaxbContext = JAXBContext.newInstance(WeiXinTextMessage.class);
         Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
         jaxbMarshaller.setProperty(
                 "com.sun.xml.bind.marshaller.CharacterEscapeHandler",
                 new CharacterEscapeHandler() {
                     @Override
                     public void escape(char[] ch, int start, int length,
-                            boolean isAttVal, Writer writer)
+                                       boolean isAttVal, Writer writer)
                             throws IOException {
                         writer.write(ch, start, length);
                     }
@@ -125,20 +111,28 @@ public class WeiXinMessage {
         return baos.toString();
     }
 
-    public static WeiXinMessage getInstance(String xml) throws JAXBException {
-        JAXBContext jaxbContext = JAXBContext.newInstance(WeiXinMessage.class);
+    public static WeiXinMessageBase getInstance(String xml) throws JAXBException {
+        final WeiXinMessageBase base = _getInstance(xml, WeiXinMessageBase.class);
+        String type = base.getMsgType();
+
+        if (WeiXinMessageType.text.val.equals(type)) {
+            return _getInstance(xml, WeiXinTextMessage.class);
+        } else if (WeiXinMessageType.event.val.equals(type)) {
+            return _getInstance(xml, WeiXinEventMessage.class);
+        } else {
+            return null;
+        }
+    }
+
+    private static WeiXinMessageBase _getInstance(String xml, Class cls)
+            throws JAXBException {
+        JAXBContext jaxbContext = JAXBContext.newInstance(cls);
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
         final StringReader xmlStream = new StringReader(xml);
-        return (WeiXinMessage) jaxbUnmarshaller.unmarshal(xmlStream);
+        return (WeiXinTextMessage) jaxbUnmarshaller.unmarshal(xmlStream);
     }
 
     public static void main(String[] args) throws JAXBException {
-        WeiXinMessage msg = new WeiXinMessage();
-        msg.setContent("hello");
-        System.out.println(msg.toXml());
 
-
-        msg = WeiXinMessage.getInstance(msg.toXml());
-        System.out.println(msg.getContent());
     }
 }
