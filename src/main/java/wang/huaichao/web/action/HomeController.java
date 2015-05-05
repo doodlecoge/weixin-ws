@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wang.huaichao.AppInitializer;
+import wang.huaichao.GsonUtils;
+import wang.huaichao.wx.AccessToken;
 import wang.huaichao.wx.WeiXinMessage;
 import wang.huaichao.wx.WeiXinUtils;
 
@@ -24,7 +26,8 @@ import java.util.Calendar;
 @RequestMapping("/")
 public class HomeController {
     private static final Logger log = LoggerFactory.getLogger(HomeController.class);
-
+    private AccessToken accessToken = null;
+    private long tokenGetTime = 0;
 
     @ResponseBody
     @RequestMapping("/index")
@@ -91,13 +94,28 @@ public class HomeController {
                     msg.getContent() + ": " + Calendar.getInstance().getTime()
             );
 
-
-            String token = WeiXinUtils.getAccessToken();
-            final String resp = WeiXinUtils.postMessage(token, sJson);
+            final String resp = WeiXinUtils.postMessage(_getAccessToken(), sJson);
             log.info(resp);
         } catch (Exception e) {
             log.error("---", e);
         }
+    }
+
+    private String _getAccessToken() throws IOException {
+        if (accessToken == null) {
+            _updateAccessToken();
+        } else {
+            final long duaration = Calendar.getInstance().getTimeInMillis() - tokenGetTime;
+            if (duaration > accessToken.getExpiresIn()) {
+                _updateAccessToken();
+            }
+        }
+        return accessToken.getAccessToken();
+    }
+
+    private void _updateAccessToken() throws IOException {
+        String token = WeiXinUtils.getAccessToken();
+        accessToken = GsonUtils.j20(token, AccessToken.class);
     }
 
     @RequestMapping("/test")
@@ -106,4 +124,5 @@ public class HomeController {
         return "test, " + Calendar.getInstance().getTimeInMillis() + ", " +
                 AppInitializer.AppConfig.getString("app.version");
     }
+
 }
