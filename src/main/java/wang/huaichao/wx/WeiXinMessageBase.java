@@ -129,7 +129,7 @@ public class WeiXinMessageBase {
         JAXBContext jaxbContext = JAXBContext.newInstance(cls);
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
         final StringReader xmlStream = new StringReader(xml);
-        return (WeiXinTextMessage) jaxbUnmarshaller.unmarshal(xmlStream);
+        return (WeiXinMessageBase) jaxbUnmarshaller.unmarshal(xmlStream);
     }
 
     public static void main(String[] args) throws JAXBException {
