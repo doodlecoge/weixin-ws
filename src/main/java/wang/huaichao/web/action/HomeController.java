@@ -13,6 +13,7 @@ import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Random;
 
 /**
  * Created by Administrator on 2015/5/4.
@@ -56,7 +57,7 @@ public class HomeController {
 
 
                 if (msgObj instanceof WeiXinTextMessage)
-                    _echo((WeiXinTextMessage) msgObj);
+                    return _echo((WeiXinTextMessage) msgObj);
                 else if (msgObj instanceof WeiXinEventMessage) {
                     final WeiXinEventMessage obj = (WeiXinEventMessage) msgObj;
                     final String sJson = WeiXinUtils.buildTextMsg(
@@ -81,23 +82,28 @@ public class HomeController {
         return null;
     }
 
-    private void _echo(WeiXinTextMessage msg) {
+    private String _echo(WeiXinTextMessage msg) {
         try {
 
-            final String sJson = WeiXinUtils.buildTextMsg(
-                    Arrays.asList(msg.getFromUserName()),
-                    null,
-                    null,
-                    WeiXinMessageType.valueOf(msg.getMsgType()),
-                    msg.getAgentId(),
-                    msg.getContent() + ": " + Calendar.getInstance().getTime()
+            return WeiXinUtils.EncryptMsg(
+                    _revert(msg.getContent()),
+                    Calendar.getInstance().getTimeInMillis() + "",
+                    (new Random().nextInt(90000) + 10000) + ""
             );
 
-            final String resp = WeiXinUtils.postMessage(_getAccessToken(), sJson);
-            log.info(resp);
         } catch (Exception e) {
             log.error("---", e);
+            return "error";
         }
+    }
+
+    private String _revert(String str) {
+        String s = "";
+        int len = str.length();
+        for (int i = 0; i < len; i++) {
+            s += str.charAt(str.charAt(len - 1 - i));
+        }
+        return s;
     }
 
     private String _getAccessToken() throws IOException {
