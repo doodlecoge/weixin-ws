@@ -69,7 +69,9 @@ public class HomeController {
                                     + Calendar.getInstance().getTime()
                     );
                     final String resp = WeiXinUtils.postMessage(_getAccessToken(), sJson);
-                    System.out.println(resp);
+                    log.info(resp);
+                } else {
+                    log.error("unknown message");
                 }
             } catch (Exception e) {
                 log.error("", e);

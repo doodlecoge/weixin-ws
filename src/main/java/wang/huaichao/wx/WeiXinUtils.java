@@ -120,7 +120,8 @@ public class WeiXinUtils {
         final JsonObject txt = new JsonObject();
         txt.addProperty("content", content);
 
-        final JsonObject jobj = _buildCommonMsg(toUsers, toParties, toTags, type, agentId);
+        final JsonObject jobj = _buildCommonMsg(toUsers, toParties, toTags, agentId);
+        jobj.addProperty("msgtype", "text");
         jobj.add("text", txt);
 
         return jobj.toString();
@@ -129,7 +130,6 @@ public class WeiXinUtils {
     private static JsonObject _buildCommonMsg(List<String> toUsers,
                                               List<String> toParties,
                                               List<String> toTags,
-                                              WeiXinMessageType type,
                                               String agentId) {
         final JsonObject jobj = new JsonObject();
         if (toUsers != null && toUsers.size() > 0) {
@@ -144,7 +144,6 @@ public class WeiXinUtils {
             jobj.addProperty("totag", StringUtils.join(toTags, "|"));
         }
 
-        jobj.addProperty("msgtype", type.name());
         jobj.addProperty("agentid", agentId);
         jobj.addProperty("safe", 0);
 
