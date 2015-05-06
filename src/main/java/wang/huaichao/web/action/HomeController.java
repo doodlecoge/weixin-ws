@@ -26,7 +26,8 @@ public class HomeController {
     private long tokenGetTime = 0;
 
     @ResponseBody
-    @RequestMapping("/index")
+    @RequestMapping(value = "/index",
+            produces = "text/xml; charset=UTF-8")
     public String index(@RequestParam String msg_signature,
                         @RequestParam String timestamp,
                         @RequestParam String nonce,
@@ -84,9 +85,12 @@ public class HomeController {
 
     private String _echo(WeiXinTextMessage msg) {
         try {
-
+            final String fromUserName = msg.getFromUserName();
+            msg.setFromUserName(msg.getToUserName());
+            msg.setToUserName(fromUserName);
+            msg.setContent(_revert(msg.getContent()));
             return WeiXinUtils.EncryptMsg(
-                    _revert(msg.getContent()),
+                    msg.toXml(),
                     Calendar.getInstance().getTimeInMillis() + "",
                     (new Random().nextInt(90000) + 10000) + ""
             );
