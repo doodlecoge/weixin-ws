@@ -20,7 +20,6 @@ import java.io.Writer;
 /**
  * Created by Administrator on 2015/5/5.
  */
-
 @XmlRootElement(name = "xml")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class WeiXinTextMessage extends WeiXinMessageBase{

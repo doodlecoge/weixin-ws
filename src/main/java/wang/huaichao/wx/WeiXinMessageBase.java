@@ -1,6 +1,8 @@
 package wang.huaichao.wx;
 
 import com.sun.xml.bind.marshaller.CharacterEscapeHandler;
+import org.xml.sax.SAXException;
+import wang.huaichao.utils.XmlUtils;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -11,6 +13,11 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.xpath.XPathExpressionException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
@@ -19,7 +26,6 @@ import java.io.Writer;
 /**
  * Created by Administrator on 2015/5/5.
  */
-@XmlRootElement(name = "xml")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class WeiXinMessageBase {
     @XmlElement(name = "ToUserName")
@@ -93,7 +99,8 @@ public class WeiXinMessageBase {
     }
 
     public String toXml() throws JAXBException {
-        JAXBContext jaxbContext = JAXBContext.newInstance(WeiXinTextMessage.class);
+        JAXBContext jaxbContext = JAXBContext.newInstance(
+                WeiXinTextMessage.class);
         Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
         jaxbMarshaller.setProperty(
                 "com.sun.xml.bind.marshaller.CharacterEscapeHandler",
@@ -111,9 +118,10 @@ public class WeiXinMessageBase {
         return baos.toString();
     }
 
-    public static WeiXinMessageBase getInstance(String xml) throws JAXBException {
-        final WeiXinMessageBase base = _getInstance(xml, WeiXinMessageBase.class);
-        String type = base.getMsgType();
+    public static WeiXinMessageBase getInstance(String xml)
+            throws JAXBException, ParserConfigurationException, SAXException,
+            XPathExpressionException, IOException {
+        String type = XmlUtils.queryString(xml, "/xml/MsgType/text()");
 
         if (WeiXinMessageType.text.val.equals(type)) {
             return _getInstance(xml, WeiXinTextMessage.class);
@@ -124,12 +132,13 @@ public class WeiXinMessageBase {
         }
     }
 
-    private static WeiXinMessageBase _getInstance(String xml, Class cls)
+
+    private static <T> T _getInstance(String xml, Class<T> cls)
             throws JAXBException {
         JAXBContext jaxbContext = JAXBContext.newInstance(cls);
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
         final StringReader xmlStream = new StringReader(xml);
-        return (WeiXinMessageBase) jaxbUnmarshaller.unmarshal(xmlStream);
+        return (T) jaxbUnmarshaller.unmarshal(xmlStream);
     }
 
     public static void main(String[] args) throws JAXBException {

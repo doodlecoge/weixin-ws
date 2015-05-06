@@ -53,7 +53,7 @@ public class HomeController {
                 log.info(msg);
 
                 WeiXinMessageBase msgObj = WeiXinMessageBase.getInstance(msg);
-                msgObj.getMsgType();
+
 
                 if (msgObj instanceof WeiXinTextMessage)
                     _echo((WeiXinTextMessage) msgObj);
