@@ -65,18 +65,14 @@ public class HomeController {
                             null,
                             WeiXinMessageType.valueOf(obj.getMsgType()),
                             obj.getAgentId(),
-                            obj.getEvent() + obj.getEventKey() + ": "
+                            obj.getEvent() + "," + obj.getEventKey() + ": "
                                     + Calendar.getInstance().getTime()
                     );
                     final String resp = WeiXinUtils.postMessage(_getAccessToken(), sJson);
                     System.out.println(resp);
                 }
-            } catch (AesException e) {
+            } catch (Exception e) {
                 log.error("", e);
-            } catch (JAXBException e) {
-                log.error("", e);
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
 
