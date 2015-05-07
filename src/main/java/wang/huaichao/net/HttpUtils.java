@@ -1,6 +1,8 @@
 package wang.huaichao.net;
 
 import com.google.gson.JsonObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import wang.huaichao.utils.GsonUtils;
 import wang.huaichao.wx.AccessToken;
 import wang.huaichao.wx.WeiXinUtils;
@@ -15,6 +17,8 @@ import java.util.Calendar;
  * Created by Administrator on 2015/5/5.
  */
 public class HttpUtils {
+    private static final Logger log = LoggerFactory.getLogger(HttpUtils.class);
+
     private final byte[] buff = new byte[1024];
 
     public String get(String sUrl) throws IOException {
@@ -22,6 +26,7 @@ public class HttpUtils {
     }
 
     public String get(String sUrl, String sEncoding) throws IOException {
+        log.debug("get url: " + sUrl);
         URL url = new URL(sUrl);
         URLConnection conn = url.openConnection();
         InputStream is = conn.getInputStream();
@@ -33,6 +38,9 @@ public class HttpUtils {
     }
 
     public String post(String sUrl, String sData, String sEncoding) throws IOException {
+        log.debug("post url: " + sUrl);
+        log.debug("post data: " + sData);
+
         URL url = new URL(sUrl);
         URLConnection conn = url.openConnection();
         if (!(conn instanceof HttpURLConnection)) {
