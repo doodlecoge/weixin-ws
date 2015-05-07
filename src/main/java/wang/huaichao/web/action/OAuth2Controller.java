@@ -58,8 +58,14 @@ public class OAuth2Controller {
                              @RequestParam String code,
                              @RequestParam String state,
                              HttpServletRequest request) {
+
+        log.info("code: " + code);
+        log.info("state: " + state);
+        log.info("req url: " + reqUrl);
+
         try {
-            final String userInfo = WeiXinUtils.getUserInfo(code, state);
+            final String userInfo = WeiXinUtils.getUserInfo(code,
+                    AppInitializer.WeiXinConfig.getString("app.agent_id"));
             log.info(userInfo);
             request.getSession().setAttribute("userid", userInfo);
         } catch (IOException e) {
