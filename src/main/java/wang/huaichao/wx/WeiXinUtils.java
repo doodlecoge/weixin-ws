@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import wang.huaichao.misc.AppInitializer;
 import wang.huaichao.net.HttpUtils;
+import wang.huaichao.utils.AccessTonkenManager;
 import wang.huaichao.utils.StringUtils;
 
 import java.io.IOException;
@@ -24,6 +25,7 @@ public class WeiXinUtils {
     private static final String sSecret = AppInitializer.WeiXinConfig.getString("wx.secret");
     public static final String sAccessToken = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=" + sCorpID + "&corpsecret=" + sSecret;
     public static final String sPostMsgUrl = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=";
+    public static final String sGetUserInfo = "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?access_token=${ACCESS_TOKEN}&code=${CODE}&agentid=${AGENTID}";
 
     private static WXBizMsgCrypt WeiXinCrypt = null;
 
@@ -150,4 +152,24 @@ public class WeiXinUtils {
         return jobj;
     }
 
+
+    // https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?
+    // access_token=ACCESS_TOKEN&code=CODE&agentid=AGENTID
+
+    public static String getUserInfo(String code, String agentid)
+            throws IOException {
+        final String url = org.apache.commons.lang3.StringUtils.replaceEach(
+                sGetUserInfo,
+                new String[]{
+                        "${ACCESS_TOKEN}",
+                        "${CODE}",
+                        "${AGENTID}"
+                },
+                new String[]{
+                        AccessTonkenManager.GetAccessToken(),
+                        code, agentid
+                });
+
+        return new HttpUtils().get(url);
+    }
 }

@@ -9,10 +9,7 @@ import wang.huaichao.misc.ConfigLoader;
 import wang.huaichao.net.HttpUtils;
 import wang.huaichao.utils.GsonUtils;
 import wang.huaichao.utils.XmlUtils;
-import wang.huaichao.wx.AccessToken;
-import wang.huaichao.wx.WeiXinMessageBase;
-import wang.huaichao.wx.WeiXinTextMessage;
-import wang.huaichao.wx.WeiXinUtils;
+import wang.huaichao.wx.*;
 
 
 import javax.xml.bind.JAXBContext;
@@ -34,18 +31,31 @@ import java.util.Calendar;
  */
 public class Main {
     public static void main(String[] args) throws Exception {
-        String xml = "<xml><ToUserName><![CDATA[wx608f8974cefe0d82]]></ToUserName>\n" +
+//        String xml = "<xml><ToUserName><![CDATA[wx608f8974cefe0d82]]></ToUserName>\n" +
+//                "<FromUserName><![CDATA[huaichao.wang]]></FromUserName>\n" +
+//                "<CreateTime>1430875398</CreateTime>\n" +
+//                "<MsgType><![CDATA[text]]></MsgType>\n" +
+//                "<Content><![CDATA[ABC]]></Content>\n" +
+//                "<MsgId>4389487259758362639</MsgId>\n" +
+//                "<AgentID>10</AgentID>\n" +
+//                "</xml>\n";
+
+
+        String xml = " <xml><ToUserName><![CDATA[wx608f8974cefe0d82]]></ToUserName>\n" +
                 "<FromUserName><![CDATA[huaichao.wang]]></FromUserName>\n" +
-                "<CreateTime>1430875398</CreateTime>\n" +
-                "<MsgType><![CDATA[text]]></MsgType>\n" +
-                "<Content><![CDATA[ABC]]></Content>\n" +
-                "<MsgId>4389487259758362639</MsgId>\n" +
+                "<CreateTime>1430880582</CreateTime>\n" +
+                "<MsgType><![CDATA[event]]></MsgType>\n" +
                 "<AgentID>10</AgentID>\n" +
-                "</xml>\n";
+                "<Event><![CDATA[click]]></Event>\n" +
+                "<EventKey><![CDATA[V1001_TODAY_MUSIC]]></EventKey>\n" +
+                "</xml>";
 
 
         final WeiXinMessageBase instance = WeiXinMessageBase.getInstance(xml);
-        System.out.println(instance instanceof WeiXinTextMessage);
+        System.out.println(instance instanceof WeiXinEventMessage);
+
+
+        aaa();
     }
 
 
@@ -71,22 +81,22 @@ public class Main {
 
         String menuUrl = "https://qyapi.weixin.qq.com/cgi-bin/menu/create?access_token="
                 + accessToken.getAccessToken()
-                + "&agentid=" + 10;
+                + "&agentid=" + 2;
         String menuJson = "{" +
                 "    \"button\": [{" +
                 "        \"type\": \"click\"," +
-                "        \"name\": \"今日歌曲\"," +
-                "        \"key\": \"V1001_TODAY_MUSIC\"" +
+                "        \"name\": \"即将召开\"," +
+                "        \"key\": \"INCOMING_MEETING\"" +
                 "    }, {" +
-                "        \"name\": \"菜单\"," +
+                "        \"name\": \"会议\"," +
                 "        \"sub_button\": [{" +
                 "            \"type\": \"view\"," +
-                "            \"name\": \"搜索\"," +
+                "            \"name\": \"会议列表\"," +
                 "            \"url\": \"http://www.soso.com/\"" +
                 "        }, {" +
                 "            \"type\": \"click\"," +
-                "            \"name\": \"赞一下我们\"," +
-                "            \"key\": \"V1001_GOOD\"" +
+                "            \"name\": \"安排会议\"," +
+                "            \"key\": \"SCHEDULE_MEETING\"" +
                 "        }]" +
                 "    }]" +
                 "}";

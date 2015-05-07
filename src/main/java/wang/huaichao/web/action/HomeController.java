@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wang.huaichao.misc.AppInitializer;
+import wang.huaichao.utils.AccessTonkenManager;
 import wang.huaichao.utils.GsonUtils;
 import wang.huaichao.wx.*;
 
@@ -22,8 +23,7 @@ import java.util.Random;
 @RequestMapping("/")
 public class HomeController {
     private static final Logger log = LoggerFactory.getLogger(HomeController.class);
-    private AccessToken accessToken = null;
-    private long tokenGetTime = 0;
+
 
     @ResponseBody
     @RequestMapping(value = "/index",
@@ -70,7 +70,9 @@ public class HomeController {
                             obj.getEvent() + "," + obj.getEventKey() + ": "
                                     + Calendar.getInstance().getTime()
                     );
-                    final String resp = WeiXinUtils.postMessage(_getAccessToken(), sJson);
+                    final String resp = WeiXinUtils.postMessage(
+                            AccessTonkenManager.GetAccessToken(), sJson
+                    );
                     log.info(resp);
                 } else {
                     log.error("unknown message");
@@ -110,22 +112,6 @@ public class HomeController {
         return s;
     }
 
-    private String _getAccessToken() throws IOException {
-        if (accessToken == null) {
-            _updateAccessToken();
-        } else {
-            final long duaration = Calendar.getInstance().getTimeInMillis() - tokenGetTime;
-            if (duaration / 1000 > accessToken.getExpiresIn()) {
-                _updateAccessToken();
-            }
-        }
-        return accessToken.getAccessToken();
-    }
-
-    private void _updateAccessToken() throws IOException {
-        String token = WeiXinUtils.getAccessToken();
-        accessToken = GsonUtils.j20(token, AccessToken.class);
-    }
 
     @RequestMapping("/test")
     @ResponseBody

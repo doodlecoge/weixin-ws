@@ -12,8 +12,8 @@ import java.io.File;
 public class AppInitializer implements ServletContextListener {
     public static Config AppConfig;
     public static Config WeiXinConfig;
+    private static final String fs = File.separator;
 
-    @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         final String root = System.getProperty("web.root.dir");
         if (!new File(root).exists()) {
@@ -22,14 +22,15 @@ public class AppInitializer implements ServletContextListener {
         AppConfig = ConfigLoader.loadFromClassPath("/app.properties");
         String location = AppConfig.getString("config.location");
         String filename = AppConfig.getString("config.filename");
-        if (location.isEmpty()) location = root;
-        if (!new File(location + File.separator + filename).exists()) {
+        if (location.isEmpty())
+            location = root + fs + "WEB-INF" + fs + "classes" + fs;
+        if (!new File(location + fs + filename).exists()) {
             throw new RuntimeException(
                     "weixin-ws.properties does not exists: " +
-                            location + File.separator + filename
+                            location + fs + filename
             );
         }
-        WeiXinConfig = ConfigLoader.load(location + File.separator + filename);
+        WeiXinConfig = ConfigLoader.load(location + fs + filename);
         WeiXinUtils.init();
     }
 

@@ -25,6 +25,7 @@
     <root>
         <level value="${log.level}"/>
         <appender-ref ref="fileAppender"/>
+        <appender-ref ref="consoleAppender"/>
     </root>
 
 </log4j:configuration>
