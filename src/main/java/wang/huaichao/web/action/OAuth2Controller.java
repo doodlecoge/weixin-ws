@@ -44,8 +44,8 @@ public class OAuth2Controller {
             log.error("", e);
             throw new RuntimeException("invalid url:" + sUrl);
         }
-        return url.getProtocol() + "://" + url.getHost() + ":"
-                + (url.getPort() > 0 ? url.getPort() : 80)
+        return url.getProtocol() + "://" + url.getHost()
+//                + ":" + (url.getPort() > 0 ? url.getPort() : 80)
                 + request.getContextPath();
     }
 
@@ -73,13 +73,16 @@ public class OAuth2Controller {
             throw new RuntimeException("failed to encode url: " + redirectUri);
         }
 
-        String oauth2Url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="
+        String oauth2Url = "https://open.weixin.qq.com/connect/oauth2/authorize"
+                + "?appid="
                 + AppInitializer.WeiXinConfig.getString("wx.corp_id")
                 + "&redirect_uri="
                 + redirectUri
                 + "&response_type=code&scope=snsapi_base&state="
                 + AppInitializer.WeiXinConfig.getString("oauth2.state")
                 + "#wechat_redirect";
+
+        log.info("oauth2 request url: " + oauth2Url);
 
         return oauth2Url;
     }
