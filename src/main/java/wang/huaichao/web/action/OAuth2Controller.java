@@ -61,7 +61,7 @@ public class OAuth2Controller {
         try {
             final String userInfo = WeiXinUtils.getUserInfo(code, state);
             log.info(userInfo);
-            request.setAttribute("userid", userInfo);
+            request.getSession().setAttribute("userid", userInfo);
         } catch (IOException e) {
             log.error("failed to get user info", e);
         }
