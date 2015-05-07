@@ -31,7 +31,7 @@ public class OAuth2Controller {
                          HttpServletRequest request) {
         final String baseUrl = _getBaseUrl(reqUrl, request);
         log.info("baseUrl: " + baseUrl);
-        return "redirect:" + oAuth2ReqUrl(baseUrl + "/oauth2back?reqUrl="
+        return "redirect:" + oAuth2ReqUrl(baseUrl + "/oauth2/oauth2back?reqUrl="
                 + StringUtils.b32encode(reqUrl.getBytes()));
 
 
