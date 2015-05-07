@@ -44,7 +44,9 @@ public class OAuth2Controller {
             log.error("", e);
             throw new RuntimeException("invalid url:" + sUrl);
         }
-        return url.getProtocol() + "://" + url.getHost() + ":" + url.getPort() + request.getContextPath();
+        return url.getProtocol() + "://" + url.getHost() + ":"
+                + (url.getPort() > 0 ? url.getPort() : 80)
+                + request.getContextPath();
     }
 
 
