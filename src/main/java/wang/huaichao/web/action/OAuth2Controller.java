@@ -3,11 +3,11 @@ package wang.huaichao.web.action;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import wang.huaichao.misc.AppInitializer;
+import wang.huaichao.utils.StringUtils;
 import wang.huaichao.wx.WeiXinUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +31,10 @@ public class OAuth2Controller {
                          HttpServletRequest request) {
         final String baseUrl = _getBaseUrl(reqUrl, request);
         log.info("baseUrl: " + baseUrl);
-        return "redirect:" + oAuth2ReqUrl(baseUrl + "/oauth2back?reqUrl=" + reqUrl);
+        return "redirect:" + oAuth2ReqUrl(baseUrl + "/oauth2back?reqUrl="
+                + StringUtils.b32encode(reqUrl.getBytes()));
+
+
     }
 
     private static String _getBaseUrl(String encodedUrl,
@@ -62,7 +65,7 @@ public class OAuth2Controller {
         } catch (IOException e) {
             log.error("failed to get user info", e);
         }
-        return "redirect:" + reqUrl;
+        return "redirect:" + new String(StringUtils.b32decode(reqUrl));
     }
 
     private String oAuth2ReqUrl(String redirectUri) {
