@@ -3,7 +3,7 @@ package wang.huaichao.web.action;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import wang.huaichao.misc.AppInitializer;
+import wang.huaichao.web.AppInitializer;
 import wang.huaichao.misc.ConfigLoader;
 import wang.huaichao.wx.WeiXinUtils;
 

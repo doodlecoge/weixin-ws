@@ -5,13 +5,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import wang.huaichao.misc.AppInitializer;
+import wang.huaichao.web.AppInitializer;
 import wang.huaichao.utils.AccessTonkenManager;
-import wang.huaichao.utils.GsonUtils;
+import wang.huaichao.web.WxIdRequired;
 import wang.huaichao.wx.*;
 
-import javax.xml.bind.JAXBException;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Random;
@@ -114,6 +112,7 @@ public class HomeController {
 
 
     @RequestMapping("/test")
+    @WxIdRequired(false)
     @ResponseBody
     public String test() {
         return "test, " + Calendar.getInstance().getTimeInMillis() + ", " +

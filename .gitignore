@@ -3,3 +3,4 @@
 target/
 tmp/
 weixin-ws.properties
+db.properties

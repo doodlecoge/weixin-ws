@@ -1,5 +1,8 @@
 package wang.huaichao.utils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.List;
 
 /**
@@ -109,6 +112,23 @@ public class StringUtils {
             }
         }
         return bytes;
+    }
+
+
+    public static String encodeUrl(String url) {
+        try {
+            return URLEncoder.encode(url, "utf8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("encode error: " + url, e);
+        }
+    }
+
+    public static String decodeUrl(String url) {
+        try {
+            return URLDecoder.decode(url, "utf8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("decode error: " + url, e);
+        }
     }
 
     public static void main(String[] args) throws Exception {

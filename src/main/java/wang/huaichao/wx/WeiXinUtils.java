@@ -5,7 +5,7 @@ import com.qq.weixin.mp.aes.AesException;
 import com.qq.weixin.mp.aes.WXBizMsgCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import wang.huaichao.misc.AppInitializer;
+import wang.huaichao.web.AppInitializer;
 import wang.huaichao.net.HttpUtils;
 import wang.huaichao.utils.AccessTonkenManager;
 import wang.huaichao.utils.StringUtils;

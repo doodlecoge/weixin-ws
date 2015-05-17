@@ -1,5 +1,7 @@
-package wang.huaichao.misc;
+package wang.huaichao.web;
 
+import wang.huaichao.misc.Config;
+import wang.huaichao.misc.ConfigLoader;
 import wang.huaichao.wx.WeiXinUtils;
 
 import javax.servlet.ServletContextEvent;

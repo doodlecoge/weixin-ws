@@ -1,12 +1,14 @@
 package wang.huaichao.web.action;
 
+import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import wang.huaichao.misc.AppInitializer;
+import wang.huaichao.web.AppInitializer;
+import wang.huaichao.utils.GsonUtils;
 import wang.huaichao.utils.StringUtils;
 import wang.huaichao.wx.WeiXinUtils;
 
@@ -67,7 +69,15 @@ public class OAuth2Controller {
             final String userInfo = WeiXinUtils.getUserInfo(code,
                     AppInitializer.WeiXinConfig.getString("app.agent_id"));
             log.info(userInfo);
-            request.getSession().setAttribute("userid", userInfo);
+            final JsonObject jobj = GsonUtils.j20(userInfo, JsonObject.class);
+            if (jobj.has("UserId")) {
+                request.getSession().setAttribute(
+                        "userid",
+                        jobj.getAsJsonPrimitive("UserId").getAsString()
+                );
+            } else {
+                request.getSession().setAttribute("userid", "");
+            }
         } catch (IOException e) {
             log.error("failed to get user info", e);
         }

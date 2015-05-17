@@ -17,6 +17,7 @@
         <config.filename>weixin-ws.properties</config.filename>
         <log.level>info</log.level>
         <log.file>weixin-ws.log</log.file>
+        <ts>${maven.build.timestamp}</ts>
     </properties>
 
 
@@ -186,7 +187,8 @@
     </dependencies>
 
     <scm>
-        <connection>scm:git:https://github.com/doodlecoge/weixin-ws.git
+        <connection>
+            scm:git:https://github.com/doodlecoge/weixin-ws.git
         </connection>
     </scm>
 

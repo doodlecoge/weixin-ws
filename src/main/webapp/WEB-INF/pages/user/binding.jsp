@@ -28,7 +28,6 @@
 
 <h1>${title}</h1>
 
-<div class="content">
     <form action="<%=cp%>/user/bind" method="post">
         <p>
             <label>${id}</label>
@@ -60,6 +59,5 @@
             <input type="submit" value="${submit}">
         </p>
     </form>
-</div>
 </body>
 </html>
