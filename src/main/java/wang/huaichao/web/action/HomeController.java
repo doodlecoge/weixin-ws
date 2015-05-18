@@ -1,17 +1,32 @@
 package wang.huaichao.web.action;
 
 import com.qq.weixin.mp.aes.AesException;
+import com.tcl.meeting.wbxclient.WebExClientBuilder;
+import com.tcl.meeting.wbxclient.WebexUser;
+import com.tcl.meeting.wbxclient.exception.WebExApiException;
+import com.tcl.meeting.wbxclient.xmlapi.command.CreateMeetingResult;
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import wang.huaichao.misc.WxWsException;
 import wang.huaichao.web.AppInitializer;
 import wang.huaichao.utils.AccessTonkenManager;
 import wang.huaichao.web.WxIdRequired;
+import wang.huaichao.web.model.User;
+import wang.huaichao.web.service.UserService;
 import wang.huaichao.wx.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -22,6 +37,8 @@ import java.util.Random;
 public class HomeController {
     private static final Logger log = LoggerFactory.getLogger(HomeController.class);
 
+    @Autowired
+    private UserService userService;
 
     @ResponseBody
     @RequestMapping(value = "/index",
@@ -117,6 +134,58 @@ public class HomeController {
     public String test() {
         return "test, " + Calendar.getInstance().getTimeInMillis() + ", " +
                 AppInitializer.AppConfig.getString("app.version");
+    }
+
+
+    @RequestMapping("/schedule")
+    public String schedule() {
+        return "schedule";
+    }
+
+    @RequestMapping("/save_schedule")
+    public String saveSchedule(
+            HttpServletRequest request,
+            @RequestParam String subject,
+            @RequestParam String password,
+            @RequestParam String startDate) {
+
+        final HttpSession session = request.getSession();
+        final Object wxid = session.getAttribute("wxid");
+        final User user = userService.retrive(wxid.toString());
+        if (user == null) {
+            throw new WxWsException("user not found:" + wxid);
+        }
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:dd");
+        Date date = null;
+        try {
+            date = df.parse(startDate);
+        } catch (ParseException e) {
+            date = new Date();
+        }
+        WebexUser webexUser = new WebexUser();
+
+        CreateMeetingResult createMeetingResult =
+                null;
+        try {
+            createMeetingResult = WebExClientBuilder
+                    .getHostClientBuilder(webexUser).build()
+                    .createMeeting(subject, password, date);
+        } catch (WebExApiException e) {
+            throw new WxWsException("schedule meeting failed");
+        }
+
+        return "redirect:/list";
+    }
+
+    @RequestMapping("/join")
+    public String join() {
+        return "join";
+    }
+
+    @RequestMapping("/list")
+    public String list() {
+        return "list";
     }
 
 }

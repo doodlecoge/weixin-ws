@@ -1,3 +1,4 @@
+<%@ page import="java.util.Calendar" %>
 <%--
   Created by IntelliJ IDEA.
   User: hch
@@ -13,34 +14,37 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%
     String cp = request.getContextPath();
+    long ts = Calendar.getInstance().getTimeInMillis();
 %>
 <spring:message code="ts" var="ts"/>
 <!doctype html>
 <html>
 <head>
     <title><decorator:title/> - Webapp Template</title>
+
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport"
-          content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
-
+          content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <meta http-equiv="Cache-Control"
           content="no-cache,no-store,must-revalidate"/>
-    <meta http-equiv="Pragma"
-          content="no-cache"/>
-    <meta http-equiv="Expires"
-          content="0"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
 
-    <link rel="stylesheet" href="<%=cp%>/css/site.css?t=${ts}" charset="utf-8">
-    <link rel="stylesheet" href="<%=cp%>/css/site-rsp.css?t=${ts}"
-          charset="utf-8">
-
-
+    <link rel="stylesheet" charset="utf-8"
+          href="<%=cp%>/css/site.css?t=<%=ts%>">
+    <link rel="stylesheet" charset="utf-8"
+          href="<%=cp%>/css/site-rsp.css?t=<%=ts%>">
+    <link rel="stylesheet" charset="utf-8"
+          href="<%=cp%>/css/font-awesome.min.css">
+    <script type="text/javascript"
+            src="<%=cp%>/js/jquery-1.11.3.min.js"></script>
     <decorator:head/>
 </head>
 <body>
 <header>
     <div class="c">
-        广州科天智慧云
+        <img src="<%=cp%>/img/ketian-logo.png" class="logo"/>
+        <span class="brand">广州科天智慧云</span>
     </div>
 </header>
 <div id="content">

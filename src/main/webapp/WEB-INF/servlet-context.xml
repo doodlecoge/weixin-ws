@@ -102,12 +102,9 @@
     <tx:annotation-driven proxy-target-class="true"
                           transaction-manager="mysqlTm"/>
 
-    <tx:advice id="txAdvice2" transaction-manager="mysqlTm">
+    <tx:advice id="txAdvice" transaction-manager="mysqlTm">
         <tx:attributes>
-            <tx:method name="insert*" propagation="REQUIRED"/>
-            <tx:method name="delete*" propagation="REQUIRED"/>
-            <tx:method name="update" propagation="REQUIRED"/>
-            <tx:method name="*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="*" propagation="REQUIRED"/>
         </tx:attributes>
     </tx:advice>
 </beans>

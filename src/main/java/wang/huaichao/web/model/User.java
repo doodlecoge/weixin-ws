@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2015/5/15.
@@ -24,6 +25,12 @@ public class User {
 
     @Column(name = "wbx_site_url")
     private String wbxSiteUrl;
+
+    @Column(name = "created_at")
+    private Date createdAt;
+
+    @Column(name = "updated_at")
+    private Date updatedAt;
 
     public String getWxId() {
         return wxId;
@@ -55,5 +62,21 @@ public class User {
 
     public void setWbxSiteUrl(String wbxSiteUrl) {
         this.wbxSiteUrl = wbxSiteUrl;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

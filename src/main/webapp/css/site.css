@@ -11,7 +11,6 @@ body, input, textarea, keygen, select, button {
     font-size: 16px;
     font-family: "Microsoft YaHei", "微软雅黑";
     color: #555;
-    width: 100%;
 }
 
 .c {
@@ -19,10 +18,19 @@ body, input, textarea, keygen, select, button {
     margin: 0 auto;
 }
 
+.logo {
+    height: 80px;
+    vertical-align: top;
+}
+
+.brand {
+    font-size: 3em;
+    color: #fff;
+}
+
 header {
     background: #69c;
-    height: 80px;
-    line-height: 80px;
+    padding: 10px 0;
 }
 
 footer {
@@ -56,4 +64,31 @@ input[type=submit], button {
     background: #69c;
     color: #fff;
     font-weight: bold;
+}
+
+.btn-group {
+    padding: 10px 0;
+    background: #ddd;
+    border-top: 1px solid #888;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+
+.btn-group a.btn {
+    width: 33.333333%;
+    float: left;
+    text-align: center;
+    display: block;
+    color: #555;
+    text-decoration: none;
+}
+
+.btn-group a.btn.sel {
+    color: #69c;
+}
+
+.btn-group a.btn .fa {
+    font-size: 1.6em;
 }

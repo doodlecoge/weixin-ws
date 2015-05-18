@@ -13,5 +13,6 @@ CREATE TABLE IF NOT EXISTS users
   wbx_username VARCHAR(128) NOT NULL,
   wbx_site_url VARCHAR(128) NOT NULL,
   fullname     VARCHAR(32)  NULL,
-  created_at   DATETIME     NOT NULL
+  created_at   DATETIME     NOT NULL,
+  updated_at   DATETIME     NOT NULL
 );

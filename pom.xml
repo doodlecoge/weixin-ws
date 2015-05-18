@@ -18,10 +18,18 @@
         <log.level>info</log.level>
         <log.file>weixin-ws.log</log.file>
         <ts>${maven.build.timestamp}</ts>
+        <maven.build.timestamp.format>yyyyMMddHHmmss
+        </maven.build.timestamp.format>
     </properties>
 
 
     <dependencies>
+        <dependency>
+            <groupId>com.skytech</groupId>
+            <artifactId>webex-client</artifactId>
+            <version>1.0</version>
+        </dependency>
+
         <!--spring ws-->
         <dependency>
             <groupId>org.springframework.ws</groupId>

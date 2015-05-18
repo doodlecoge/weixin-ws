@@ -1,5 +1,12 @@
 package wang.huaichao.web.action;
 
+import com.tcl.meeting.wbxclient.WebExClient;
+import com.tcl.meeting.wbxclient.WebExClientBuilder;
+import com.tcl.meeting.wbxclient.WebexUser;
+import com.tcl.meeting.wbxclient.exception.WebExApiException;
+import com.tcl.meeting.wbxclient.urlapi.command.ResultStatus;
+import com.tcl.meeting.wbxclient.urlapi.command.user.GetEncryptedPasswordResponse;
+import com.tcl.meeting.wbxclient.urlapi.command.user.GetSessionTicketResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import wang.huaichao.misc.WxWsException;
 import wang.huaichao.web.WxIdRequired;
+import wang.huaichao.web.model.User;
 import wang.huaichao.web.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,6 +53,7 @@ public class UserInfoController {
         return "user/binding";
     }
 
+    @WxIdRequired(false)
     @RequestMapping("/bind")
     public String bind(
             @RequestParam String wxId,
@@ -55,26 +65,46 @@ public class UserInfoController {
         log.debug(wbxPassword);
         log.debug(wbxSiteUrl);
 
+        final User user = userService.retrive(wxId);
 
-        userService.create(wxId, wbxUsername, wbxPassword, wbxSiteUrl, null);
+        if (user != null)
+            throw new RuntimeException("user already exists: " + wxId);
+
+        try {
+            String ticket = checkWebExAccount(
+                    wbxUsername, wbxPassword, wbxSiteUrl
+            );
+            if (ticket == null) throw new WebExApiException("ticket is null");
+        } catch (WebExApiException e) {
+            throw new WxWsException("failed to check WebEx account", e);
+        }
+        userService.create(wxId, wbxUsername, wbxPassword, wbxSiteUrl);
 
         return "user/profile";
     }
 
-    private String getBackUrl(HttpServletRequest request) {
-        String backUrl = request.getRequestURL().toString();
-        String param = request.getQueryString();
-        if (param != null) {
-            backUrl += "?" + param;
+
+    private String checkWebExAccount(String wbxId, String wbxPwd, String wbxUrl)
+            throws WebExApiException {
+        WebexUser user = new WebexUser();
+        user.setWebexId(wbxId);
+        user.setWebexPassword(wbxPwd);
+        user.setWebexSiteName(wbxUrl);
+
+        WebExClient client = WebExClientBuilder
+                .getHostClientBuilder(user).build();
+        String ticket = null;
+
+        GetEncryptedPasswordResponse password =
+                client.getEncryptedPassword(wbxId, wbxPwd);
+        String encryptedPassword = password.getEncryptedPassword();
+        GetSessionTicketResponse response =
+                client.getSessionTicket(wbxId, encryptedPassword);
+        if (response != null &&
+                response.getResult().equals(ResultStatus.SUCCESS)) {
+            ticket = response.getSessionTicket();
         }
 
-        log.info(backUrl);
-
-        try {
-            return java.net.URLEncoder.encode(backUrl, "utf-8");
-        } catch (UnsupportedEncodingException e) {
-            log.error("url encoding failed", e);
-            throw new RuntimeException("url encoding failed:" + backUrl);
-        }
+        return ticket;
     }
 }
