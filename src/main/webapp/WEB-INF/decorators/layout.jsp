@@ -17,10 +17,11 @@
     long ts = Calendar.getInstance().getTimeInMillis();
 %>
 <spring:message code="ts" var="ts"/>
+<spring:message code="site.title" var="siteTitle"/>
 <!doctype html>
 <html>
 <head>
-    <title><decorator:title/> - Webapp Template</title>
+    <title><decorator:title/> - ${siteTitle}</title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport"
@@ -38,6 +39,10 @@
           href="<%=cp%>/css/font-awesome.min.css">
     <script type="text/javascript"
             src="<%=cp%>/js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript"
+            src="<%=cp%>/js/jquery-ui-core.js"></script>
+    <script type="text/javascript"
+            src="<%=cp%>/js/xhr-form.js"></script>
     <decorator:head/>
 </head>
 <body>

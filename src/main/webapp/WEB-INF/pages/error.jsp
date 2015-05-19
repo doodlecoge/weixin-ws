@@ -11,7 +11,7 @@
 <%
     String cp = request.getContextPath();
 %>
-<spring:message code="list.title" var="title"/>
+<spring:message code="error.title" var="title"/>
 <html>
 <head>
     <title>${title}</title>
@@ -22,6 +22,20 @@
     </style>
 </head>
 <body>
-<jsp:include page="bottom-bar.jsp"></jsp:include>
+<br/>
+
+<div>
+    <div class="alert error">
+        <i class="fa fa-times-circle icon"></i>
+        <span class="txt">${message}</span>
+    </div>
+
+    <br/>
+
+    <a href="javascript:history.go(-1)" class="button">
+        <i class="fa fa-arrow-left"></i>
+        返回
+    </a>
+</div>
 </body>
 </html>

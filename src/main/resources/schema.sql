@@ -16,3 +16,12 @@ CREATE TABLE IF NOT EXISTS users
   created_at   DATETIME     NOT NULL,
   updated_at   DATETIME     NOT NULL
 );
+
+
+CREATE TABLE IF NOT EXISTS meetings
+(
+  meeting_key VARCHAR(256)  NOT NULL PRIMARY KEY,
+  subject     VARCHAR(256)  NOT NULL,
+  join_url    VARCHAR(256)  NOT NULL,
+  created_at  DATETIME      NOT NULL
+);

@@ -17,7 +17,7 @@
 <spring:message code="join.submit" var="submit"/>
 <html>
 <head>
-    <title>Schedule</title>
+    <title>${title}</title>
     <style type="text/css">
         footer {
             display: none;

@@ -39,13 +39,13 @@
     <p>
         <label>${wbx_username}</label>
         <br/>
-        <input type="text" name="wbxUsername" tabindex="1">
+        <input type="text" name="wbxUsername">
     </p>
 
     <p>
         <label>${wbx_password}</label>
         <br/>
-        <input type="text" name="wbxPassword" tabindex="2">
+        <input type="password" name="wbxPassword">
     </p>
 
     <p>

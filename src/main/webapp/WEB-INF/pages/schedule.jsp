@@ -13,14 +13,16 @@
 %>
 <spring:message code="schedule.title" var="title"/>
 <spring:message code="schedule.subject" var="subject"/>
+<spring:message code="schedule.start_date" var="startDate"/>
 <spring:message code="schedule.start_time" var="startTime"/>
-<spring:message code="schedule.end_time" var="endTime"/>
+<spring:message code="schedule.password" var="password"/>
+<spring:message code="schedule.confirmp" var="confirmp"/>
 <spring:message code="schedule.submit" var="submit"/>
 
 
 <html>
 <head>
-    <title>Schedule</title>
+    <title>${title}</title>
     <style type="text/css">
         footer {
             display: none;
@@ -40,16 +42,30 @@
     </p>
 
     <p>
-        <label>${startTime}</label>
+        <label>${startDate}</label>
         <br/>
-        <input type="text" name="startTime">
+        <input type="date" name="startDate">
     </p>
 
-    <%--<p>--%>
-        <%--<label>${endTime}</label>--%>
-        <%--<br/>--%>
-        <%--<input type="text" name="endTime">--%>
-    <%--</p>--%>
+    <p>
+        <label>${startTime}</label>
+        <br/>
+        <input type="time" name="startTime">
+    </p>
+
+    <p>
+        <label>${password}</label>
+        <br/>
+        <input type="password" name="password">
+    </p>
+
+    <p>
+        <label>${confirmp}</label>
+        <br/>
+        <input type="password" name="confirmp">
+    </p>
+
+    <p id="error" style="display: none"></p>
 
     <p>
         <label>&nbsp;</label>
@@ -57,6 +73,24 @@
         <input type="submit" value="${submit}">
     </p>
 </form>
+
+
+<script type="text/javascript">
+    $('form').xhrForm({
+        beforeSubmit: function () {
+            $('#error').hide();
+        },
+        fail: function (data) {
+            $('#error').html(data.message||'schedule failed').show();
+        },
+        success: function (data) {
+            if (data.error)
+                $('#error').html(data.message).show();
+            else
+                $('#error').html(data.message).show();
+        }
+    });
+</script>
 
 
 <jsp:include page="bottom-bar.jsp"></jsp:include>
