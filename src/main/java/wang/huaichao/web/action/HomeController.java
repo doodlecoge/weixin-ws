@@ -49,6 +49,7 @@ public class HomeController {
     @ResponseBody
     @RequestMapping(value = "/index",
             produces = "text/xml; charset=UTF-8")
+    @WxIdRequired(false)
     public String index(@RequestParam String msg_signature,
                         @RequestParam String timestamp,
                         @RequestParam String nonce,
