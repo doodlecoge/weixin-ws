@@ -22,6 +22,13 @@ public class Config {
         return kvs.get(key);
     }
 
+    public boolean getBoolean(String key, boolean def) {
+        if (kvs.containsKey(key)) {
+            final String val = getString(key);
+            return "1".equals(val) || "true".equalsIgnoreCase(val);
+        } else return def;
+    }
+
     public int getInt(String key) {
         return Integer.valueOf(kvs.get(key));
     }

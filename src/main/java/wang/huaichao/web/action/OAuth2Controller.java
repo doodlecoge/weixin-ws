@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import wang.huaichao.web.AppInitializer;
 import wang.huaichao.utils.GsonUtils;
 import wang.huaichao.utils.StringUtils;
+import wang.huaichao.web.WxIdRequired;
 import wang.huaichao.wx.WeiXinUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,7 @@ public class OAuth2Controller {
             OAuth2Controller.class);
 
     @RequestMapping(method = RequestMethod.GET)
+    @WxIdRequired(false)
     public String oauth2(@RequestParam String reqUrl,
                          HttpServletRequest request) {
         final String baseUrl = _getBaseUrl(reqUrl, request);
@@ -56,6 +58,7 @@ public class OAuth2Controller {
 
 
     @RequestMapping("/oauth2back")
+    @WxIdRequired(false)
     public String oauth2back(@RequestParam String reqUrl,
                              @RequestParam String code,
                              @RequestParam String state,

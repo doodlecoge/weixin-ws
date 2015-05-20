@@ -63,7 +63,7 @@ public class OAuth2Intercepter extends HandlerInterceptorAdapter {
 
         response.sendRedirect(
                 request.getContextPath()
-                        + "oauth2?reqUrl="
+                        + "/oauth2?reqUrl="
                         + StringUtils.encodeUrl(reqUrl)
         );
         return false;
