@@ -11,6 +11,7 @@ import wang.huaichao.misc.Config;
 import wang.huaichao.misc.ConfigLoader;
 import wang.huaichao.net.HttpUtils;
 import wang.huaichao.utils.AccessTonkenManager;
+import wang.huaichao.utils.FileUtils;
 import wang.huaichao.utils.GsonUtils;
 import wang.huaichao.utils.XmlUtils;
 import wang.huaichao.wx.*;
@@ -59,7 +60,6 @@ public class Main {
 //        System.out.println(instance instanceof WeiXinEventMessage);
 
 
-//        aaa();
 
     }
 
@@ -67,46 +67,5 @@ public class Main {
 
 
 
-    public static void aaa() throws IOException {
-        final Config config = ConfigLoader.loadFromClassPath("/weixin-ws.properties");
-        final String sAccessToken = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=" +
-                config.getString("wx.corp_id")
-                + "&corpsecret=" +
-                config.getString("wx.secret");
 
-        final HttpUtils httpUtils = new HttpUtils();
-        final String resp = httpUtils.get(sAccessToken);
-
-        System.out.println(resp);
-
-        final AccessToken accessToken = GsonUtils.j20(resp, AccessToken.class);
-        System.out.println(accessToken.getAccessToken());
-        System.out.println(accessToken.getExpiresIn());
-
-
-        String menuUrl = "https://qyapi.weixin.qq.com/cgi-bin/menu/create?access_token="
-                + accessToken.getAccessToken()
-                + "&agentid=" + 2;
-        String menuJson = "{" +
-                "    \"button\": [{" +
-                "        \"type\": \"click\"," +
-                "        \"name\": \"即将召开\"," +
-                "        \"key\": \"INCOMING_MEETING\"" +
-                "    }, {" +
-                "        \"name\": \"会议\"," +
-                "        \"sub_button\": [{" +
-                "            \"type\": \"view\"," +
-                "            \"name\": \"会议列表\"," +
-                "            \"url\": \"http://www.soso.com/\"" +
-                "        }, {" +
-                "            \"type\": \"click\"," +
-                "            \"name\": \"安排会议\"," +
-                "            \"key\": \"SCHEDULE_MEETING\"" +
-                "        }]" +
-                "    }]" +
-                "}";
-
-        final String post = httpUtils.post(menuUrl, menuJson);
-        System.out.println(post);
-    }
 }
