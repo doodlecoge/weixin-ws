@@ -75,11 +75,11 @@ public class OAuth2Controller {
             final JsonObject jobj = GsonUtils.j20(userInfo, JsonObject.class);
             if (jobj.has("UserId")) {
                 request.getSession().setAttribute(
-                        "userid",
+                        "wxid",
                         jobj.getAsJsonPrimitive("UserId").getAsString()
                 );
             } else {
-                request.getSession().setAttribute("userid", "");
+                request.getSession().setAttribute("wxid", "");
             }
         } catch (IOException e) {
             log.error("failed to get user info", e);
