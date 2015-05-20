@@ -60,6 +60,9 @@ public class Main {
 //        System.out.println(instance instanceof WeiXinEventMessage);
 
 
+        System.out.println(
+                System.getProperty("JAVA_OPTS")
+        );
 
     }
 

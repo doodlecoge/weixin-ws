@@ -19,6 +19,7 @@ import java.io.IOException;
 @ControllerAdvice
 public class Adviser {
     @ExceptionHandler({Exception.class, WxWsException.class})
+    @WxIdRequired(false)
     public ModelAndView globalErrorHandler(HttpServletRequest request,
                                            HttpServletResponse response,
                                            Exception ex) {

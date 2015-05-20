@@ -56,14 +56,17 @@ public class UserInfoController {
     @WxIdRequired(false)
     @RequestMapping("/bind")
     public String bind(
-            @RequestParam String wxId,
+            HttpServletRequest request,
             @RequestParam String wbxUsername,
             @RequestParam String wbxPassword,
             @RequestParam String wbxSiteUrl) {
-        log.debug(wxId);
         log.debug(wbxUsername);
         log.debug(wbxPassword);
         log.debug(wbxSiteUrl);
+
+        final HttpSession session = request.getSession();
+        String wxId = session.getAttribute("wxid").toString();
+
 
         final User user = userService.retrive(wxId);
 
