@@ -10,7 +10,8 @@
 
     .brand {
         display: block;
-        font-size: 2em;
+        font-size: 1.5em;
+        padding: .5em 0 0 0;
     }
 
     input {

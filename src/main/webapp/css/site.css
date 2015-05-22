@@ -24,18 +24,19 @@ body, input, textarea, keygen, select, button {
 }
 
 .brand {
-    font-size: 3em;
-    color: #fff;
+    font-size: 3.5em;
+    padding-left: 30px;
 }
 
 header {
-    background: #69c;
     padding: 10px 0;
+    border-bottom: 5px solid #aaa;
+    background: #e8e8e8;
 }
 
 footer {
     background: #e8e8e8;
-    border-top: 3px solid #888;
+    border-top: 5px solid #aaa;
     margin-top: 10px;
     line-height: 50px;
 }
