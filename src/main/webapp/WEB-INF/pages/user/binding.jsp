@@ -1,3 +1,4 @@
+<%@ page import="java.util.Calendar" %>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%--
   Created by IntelliJ IDEA.
@@ -29,7 +30,7 @@
 
 <h1>${title}</h1>
 
-<form action="<%=cp%>/user/bind" method="post">
+<form action="<%=cp%>/user/bind?t=<%=Calendar.getInstance().getTimeInMillis()%>" method="post">
     <p>
         <label>${id}</label>
         <br/>
