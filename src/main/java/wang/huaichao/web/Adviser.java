@@ -24,21 +24,28 @@ public class Adviser {
                                            HttpServletResponse response,
                                            Exception ex) {
 
-        try {
+        if (isAjax(request)) {
+            try {
 
-            response.getWriter().write(
-                    GsonUtils.buildResponse(true, ex.getMessage())
-            );
-            response.getWriter().close();
-            return null;
-        } catch (IOException e) {
-            e.printStackTrace();
+                response.getWriter().write(
+                        GsonUtils.buildResponse(true, ex.getMessage())
+                );
+                response.getWriter().close();
+                return null;
+            } catch (IOException e) {
+                return null;
+            }
+        } else {
+            ModelAndView mav = new ModelAndView();
+            mav.addObject("message", ex.getMessage());
+            mav.addObject("url", request.getRequestURL());
+            mav.setViewName("error");
+            return mav;
         }
+    }
 
-        ModelAndView mav = new ModelAndView();
-        mav.addObject("message", ex.getMessage());
-        mav.addObject("url", request.getRequestURL());
-        mav.setViewName("error");
-        return mav;
+    public static boolean isAjax(HttpServletRequest request) {
+        return "XMLHttpRequest"
+                .equals(request.getHeader("X-Requested-With"));
     }
 }
