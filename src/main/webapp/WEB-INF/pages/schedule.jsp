@@ -1,3 +1,4 @@
+<%@ page import="java.util.Calendar" %>
 <%--
   Created by IntelliJ IDEA.
   User: Administrator
@@ -34,7 +35,7 @@
 
 <h1>${title}</h1>
 
-<form action="<%=cp%>/save_schedule" method="post">
+<form action="<%=cp%>/save_schedule?t=<%=Calendar.getInstance().getTimeInMillis()%>" method="post">
     <p>
         <label>${subject}</label>
         <br/>
@@ -75,22 +76,22 @@
 </form>
 
 
-<script type="text/javascript">
-    $('form').xhrForm({
-        beforeSubmit: function () {
-            $('#error').hide();
-        },
-        fail: function (data) {
-            $('#error').html(data.message||'schedule failed').show();
-        },
-        success: function (data) {
-            if (data.error)
-                $('#error').html(data.message).show();
-            else
-                $('#error').html(data.message).show();
-        }
-    });
-</script>
+<%--<script type="text/javascript">--%>
+    <%--$('form').xhrForm({--%>
+        <%--beforeSubmit: function () {--%>
+            <%--$('#error').hide();--%>
+        <%--},--%>
+        <%--fail: function (data) {--%>
+            <%--$('#error').html(data.message||'schedule failed').show();--%>
+        <%--},--%>
+        <%--success: function (data) {--%>
+            <%--if (data.error)--%>
+                <%--$('#error').html(data.message).show();--%>
+            <%--else--%>
+                <%--$('#error').html(data.message).show();--%>
+        <%--}--%>
+    <%--});--%>
+<%--</script>--%>
 
 
 <jsp:include page="bottom-bar.jsp"></jsp:include>
