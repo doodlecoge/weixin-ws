@@ -27,6 +27,8 @@ import wang.huaichao.wx.*;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -258,4 +260,16 @@ public class HomeController {
         return "list";
     }
 
+
+    @RequestMapping("/share")
+    @WxIdRequired(false)
+    public String share(ModelMap map) throws IOException, NoSuchAlgorithmException {
+        String nonceStr = "2nDgiWM7gCxhL8v0";
+        final long ms = Calendar.getInstance().getTimeInMillis();
+        map.put("nonceStr", nonceStr);
+        map.put("timestamp", ms);
+        map.put("signature", WeiXinUtils.getSignature(nonceStr, ms));
+        map.put("appId", AppInitializer.WeiXinConfig.getString("wx.corp_id"));
+        return "share";
+    }
 }

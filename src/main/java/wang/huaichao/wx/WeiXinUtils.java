@@ -11,6 +11,8 @@ import wang.huaichao.utils.AccessTonkenManager;
 import wang.huaichao.utils.StringUtils;
 
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 /**
@@ -171,5 +173,50 @@ public class WeiXinUtils {
                 });
 
         return new HttpUtils().get(url);
+    }
+
+    public static String getJsApiTicket() throws IOException {
+        String url = AppInitializer.WeiXinConfig
+                .getString("wx.jsapi_ticket.url") +
+                AccessTonkenManager.GetAccessToken();
+        final HttpUtils httpUtils = new HttpUtils();
+        return httpUtils.get(url);
+    }
+
+    public static String getSignature(String noncestr, long timestamp) throws IOException, NoSuchAlgorithmException {
+        // noncestr=Wm3WZYTPz0wzccnW
+        // jsapi_ticket=sM4AOVdWfPE4DxkXGEs8VMCPGGVi4C3VM0P37wVUCFvkVAy_90u5h9nbSlYy3-Sl-HhTdfl2fzFy1AOcHKP7qg
+        // timestamp=1414587457
+        // url=http://mp.weixin.qq.com
+
+        String jsapi_ticket = AccessTonkenManager.GetJsApiTicket();
+        String url = AppInitializer.WeiXinConfig.getString("site.url");
+
+        String str = "jsapi_ticket=" + jsapi_ticket +
+                "&noncestr=" + noncestr +
+                "&timestamp=" + timestamp +
+                "&url=" + url;
+
+
+        final String str1 = _sha1(str);
+        return str1;
+    }
+
+    private static String _sha1(String str)
+            throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-1");
+        md.update(str.getBytes());
+        byte[] digest = md.digest();
+
+        StringBuffer hexstr = new StringBuffer();
+        String shaHex = "";
+        for (int i = 0; i < digest.length; i++) {
+            shaHex = Integer.toHexString(digest[i] & 0xFF);
+            if (shaHex.length() < 2) {
+                hexstr.append(0);
+            }
+            hexstr.append(shaHex);
+        }
+        return hexstr.toString();
     }
 }

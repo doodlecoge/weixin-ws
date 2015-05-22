@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import wang.huaichao.misc.WxWsException;
 import wang.huaichao.web.WxIdRequired;
@@ -54,7 +55,7 @@ public class UserInfoController {
     }
 
     @WxIdRequired(false)
-    @RequestMapping("/bind")
+    @RequestMapping(value = "/bind",method = RequestMethod.POST)
     public String bind(
             HttpServletRequest request,
             @RequestParam String wbxUsername,
@@ -83,7 +84,7 @@ public class UserInfoController {
         }
         userService.create(wxId, wbxUsername, wbxPassword, wbxSiteUrl);
 
-        return "user/profile";
+        return "schedule";
     }
 
 
