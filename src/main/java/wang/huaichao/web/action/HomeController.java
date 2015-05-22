@@ -155,7 +155,7 @@ public class HomeController {
             value = "/save_schedule",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @ResponseBody
+//    @ResponseBody
     public String saveSchedule(
             HttpServletRequest request,
             @RequestParam String subject,
@@ -201,7 +201,9 @@ public class HomeController {
         if (!createMeetingResult.isSuccess())
             new WxWsException("schedule meeting failed");
 
-        return GsonUtils.buildSuccessResponse();
+//        return GsonUtils.buildSuccessResponse();
+
+        return "redirect:/list";
     }
 
     @RequestMapping("/join")
