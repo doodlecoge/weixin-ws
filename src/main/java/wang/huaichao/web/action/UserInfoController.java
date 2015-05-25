@@ -88,7 +88,7 @@ public class UserInfoController {
         }
         userService.create(wxId, wbxUsername, wbxPassword, wbxSiteUrl);
 
-        return "schedule";
+        return "bind_success";
     }
 
 
