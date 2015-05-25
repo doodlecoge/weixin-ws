@@ -55,14 +55,17 @@ public class OAuth2Intercepter extends HandlerInterceptorAdapter {
         }
 
 
-
         // get weixin id by oauth2
 
-        String reqUrl = request.getRequestURL().toString();
-        String param = request.getQueryString();
-        if (param != null) {
-            reqUrl += "?" + param;
-        }
+//        String reqUrl = request.getRequestURL().toString();
+//        String param = request.getQueryString();
+//        if (param != null) {
+//            reqUrl += "?" + param;
+//        }
+
+        String reqUrl = AppInitializer.WeiXinConfig.getString("app.base_url")
+                + request.getContextPath()
+                + "/room";
 
         response.sendRedirect(
                 request.getContextPath()
