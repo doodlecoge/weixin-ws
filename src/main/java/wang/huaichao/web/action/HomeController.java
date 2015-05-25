@@ -6,6 +6,7 @@ import com.tcl.meeting.wbxclient.WebexUser;
 import com.tcl.meeting.wbxclient.exception.WebExApiException;
 import com.tcl.meeting.wbxclient.xmlapi.command.CreateMeetingResult;
 import com.tcl.meeting.wbxclient.xmlapi.command.GetJoinMeetingUrlResult;
+import com.tcl.meeting.wbxclient.xmlapi.command.GetUserResult;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -273,5 +274,44 @@ public class HomeController {
         map.put("signature", WeiXinUtils.getSignature(nonceStr, ms));
         map.put("appId", AppInitializer.WeiXinConfig.getString("wx.corp_id"));
         return "share";
+    }
+
+
+    @RequestMapping("/room")
+    public String myroom(HttpServletRequest request) {
+        final HttpSession session = request.getSession();
+        final Object wxid = session.getAttribute("wxid");
+        return "redirect:/room/" + wxid.toString();
+    }
+
+
+    @RequestMapping("/room/{wxid}")
+    public String myroom(@PathVariable String wxid,
+                         ModelMap map) {
+        final User user = userService.retrive(wxid);
+
+
+        final WebexUser webexUser = new WebexUser();
+        webexUser.setWebexSiteName(user.getWbxSiteUrl());
+        webexUser.setWebexId(user.getWbxUsername());
+        webexUser.setWebexPassword(user.getWbxPassword());
+
+        GetUserResult result = null;
+        try {
+            result = WebExClientBuilder
+                    .getHostClientBuilder(webexUser).build()
+                    .getUser(user.getWbxUsername());
+        } catch (WebExApiException e) {
+            throw new WxWsException("获取信账户信息失败", e);
+        }
+
+        if (result.isSuccess()) {
+            final String roomUrl = result.getPersonalMeetingRoomURL();
+            log.debug("personal room url: " + roomUrl);
+            map.put("roomUrl", roomUrl);
+            return "room";
+        } else {
+            throw new WxWsException("get personal meeting room failed");
+        }
     }
 }

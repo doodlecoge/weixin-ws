@@ -6,19 +6,14 @@
       "url": "http://cloudtm.net/weixin-ws/schedule"
     },
     {
-      "name": "会议",
-      "sub_button": [
-        {
-          "type": "view",
-          "name": "会议列表",
-          "url": "http://www.soso.com/"
-        },
-        {
-          "type": "click",
-          "name": "安排会议",
-          "key": "SCHEDULE_MEETING"
-        }
-      ]
+      "type": "view",
+      "name": "我的会议室",
+      "url": "http://cloudtm.net/weixin-ws/room"
+    },
+    {
+      "type": "view",
+      "name": "帮助",
+      "url": "https://support.webex.com/MyAccountWeb/supporthome.do"
     }
   ]
 }

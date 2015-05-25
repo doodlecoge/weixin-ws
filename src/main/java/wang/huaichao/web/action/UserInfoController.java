@@ -55,7 +55,7 @@ public class UserInfoController {
     }
 
     @WxIdRequired(false)
-    @RequestMapping(value = "/bind",method = RequestMethod.POST)
+    @RequestMapping(value = "/bind", method = RequestMethod.POST)
     public String bind(
             HttpServletRequest request,
             @RequestParam String wbxUsername,
@@ -73,6 +73,10 @@ public class UserInfoController {
 
         if (user != null)
             throw new RuntimeException("user already exists: " + wxId);
+
+        if (wbxSiteUrl.indexOf(".") > 0) {
+            wbxSiteUrl = wbxSiteUrl.substring(0, wbxSiteUrl.indexOf("."));
+        }
 
         try {
             String ticket = checkWebExAccount(

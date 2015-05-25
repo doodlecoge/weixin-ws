@@ -55,6 +55,9 @@ public class OAuth2Intercepter extends HandlerInterceptorAdapter {
         }
 
 
+
+        // get weixin id by oauth2
+
         String reqUrl = request.getRequestURL().toString();
         String param = request.getQueryString();
         if (param != null) {

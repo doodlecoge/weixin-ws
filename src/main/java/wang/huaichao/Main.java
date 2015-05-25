@@ -60,8 +60,9 @@ public class Main {
 //        System.out.println(instance instanceof WeiXinEventMessage);
 
 
+        String x = "abcdefg";
         System.out.println(
-                System.getProperty("JAVA_OPTS")
+                x.substring(0,x.indexOf("."))
         );
 
     }
