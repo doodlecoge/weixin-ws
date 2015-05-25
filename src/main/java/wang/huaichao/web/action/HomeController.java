@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import wang.huaichao.misc.WxWsException;
 import wang.huaichao.utils.GsonUtils;
+import wang.huaichao.utils.StringUtils;
 import wang.huaichao.web.AppInitializer;
 import wang.huaichao.utils.AccessTonkenManager;
 import wang.huaichao.web.WxIdRequired;
@@ -281,13 +282,15 @@ public class HomeController {
     public String myroom(HttpServletRequest request) {
         final HttpSession session = request.getSession();
         final Object wxid = session.getAttribute("wxid");
-        return "redirect:/room/" + wxid.toString();
+        return "redirect:/room/"
+                + StringUtils.b32encode(wxid.toString().getBytes());
     }
 
 
     @RequestMapping("/room/{wxid}")
     public String myroom(@PathVariable String wxid,
                          ModelMap map) {
+        wxid = new String(StringUtils.b32decode(wxid));
         final User user = userService.retrive(wxid);
 
 
