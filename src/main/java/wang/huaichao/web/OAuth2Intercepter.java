@@ -35,9 +35,9 @@ public class OAuth2Intercepter extends HandlerInterceptorAdapter {
         final HttpSession session = request.getSession();
 
         // developing
-        if (AppContext.isDeveloping()) {
-            session.setAttribute("wxid", "fake-wxid-0123456789");
-        }
+//        if (AppContext.isDeveloping()) {
+//            session.setAttribute("wxid", "fake-wxid-0123456789");
+//        }
 
         if (session.getAttribute("wxid") != null) {
             User user = userService.retrive(

@@ -3,12 +3,12 @@
     {
       "type": "view",
       "name": "预定会议",
-      "url": "http://cloudtm.net/weixin-ws/schedule"
+      "url": "http://im.cloudtm.net/weixin/schedule"
     },
     {
       "type": "view",
       "name": "我的会议室",
-      "url": "http://cloudtm.net/weixin-ws/room"
+      "url": "http://im.cloudtm.net/weixin/room"
     },
     {
       "type": "view",

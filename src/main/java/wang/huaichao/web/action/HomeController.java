@@ -86,20 +86,20 @@ public class HomeController {
                 if (msgObj instanceof WeiXinTextMessage)
                     return _echo((WeiXinTextMessage) msgObj);
                 else if (msgObj instanceof WeiXinEventMessage) {
-                    final WeiXinEventMessage obj = (WeiXinEventMessage) msgObj;
-                    final String sJson = WeiXinUtils.buildTextMsg(
-                            Arrays.asList(obj.getFromUserName()),
-                            null,
-                            null,
-                            WeiXinMessageType.valueOf(obj.getMsgType()),
-                            obj.getAgentId(),
-                            obj.getEvent() + "," + obj.getEventKey() + ": "
-                                    + Calendar.getInstance().getTime()
-                    );
-                    final String resp = WeiXinUtils.postMessage(
-                            AccessTonkenManager.GetAccessToken(), sJson
-                    );
-                    log.info(resp);
+//                    final WeiXinEventMessage obj = (WeiXinEventMessage) msgObj;
+//                    final String sJson = WeiXinUtils.buildTextMsg(
+//                            Arrays.asList(obj.getFromUserName()),
+//                            null,
+//                            null,
+//                            WeiXinMessageType.valueOf(obj.getMsgType()),
+//                            obj.getAgentId(),
+//                            obj.getEvent() + "," + obj.getEventKey() + ": "
+//                                    + Calendar.getInstance().getTime()
+//                    );
+//                    final String resp = WeiXinUtils.postMessage(
+//                            AccessTonkenManager.GetAccessToken(), sJson
+//                    );
+//                    log.info(resp);
                 } else {
                     log.error("unknown message");
                 }
