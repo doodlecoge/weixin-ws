@@ -5,6 +5,7 @@ import com.qq.weixin.mp.aes.AesException;
 import com.qq.weixin.mp.aes.WXBizMsgCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import wang.huaichao.utils.GsonUtils;
 import wang.huaichao.web.AppInitializer;
 import wang.huaichao.net.HttpUtils;
 import wang.huaichao.utils.AccessTonkenManager;
@@ -218,5 +219,18 @@ public class WeiXinUtils {
             hexstr.append(shaHex);
         }
         return hexstr.toString();
+    }
+
+    public static String getUserAvatar(String wxid) throws IOException {
+        String userInfoUrl =
+                AppInitializer.WeiXinConfig.getString("wx.get_user.url");
+        userInfoUrl = userInfoUrl.replace(
+                "${access_token}", AccessTonkenManager.GetAccessToken()
+        ) + wxid;
+
+        final HttpUtils httpUtils = new HttpUtils();
+        final String json = httpUtils.get(userInfoUrl);
+        final UserInfo userInfo = GsonUtils.j20(json, UserInfo.class);
+        return userInfo.getAvatar();
     }
 }

@@ -51,9 +51,16 @@
             /* Good browsers */
             opacity: 0.7;
         }
+
+        .avatar {
+            width: 60%;
+            margin: 10px 20%;
+        }
     </style>
 </head>
 <body>
+<img src="${avatar}" class="avatar"/>
+
 <div class="overlay t70" style="display: none;"></div>
 <img class="tip_img" style="display: none;" src="<%=cp%>/img/weixin_tip.png">
 <script type="text/javascript">

@@ -290,7 +290,7 @@ public class HomeController {
     @RequestMapping("/room/{wxid}")
     @WxIdRequired(false)
     public String myroom(@PathVariable String wxid,
-                         ModelMap map) {
+                         ModelMap map) throws IOException {
         wxid = new String(StringUtils.b32decode(wxid));
         final User user = userService.retrive(wxid);
 
@@ -315,6 +315,7 @@ public class HomeController {
             final String roomUrl = result.getPersonalMeetingRoomURL();
             log.debug("personal room url: " + roomUrl);
             map.put("roomUrl", roomUrl);
+            map.put("avatar",WeiXinUtils.getUserAvatar(wxid));
             return "room";
         } else {
             throw new WxWsException("get personal meeting room failed");
