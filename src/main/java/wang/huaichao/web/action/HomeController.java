@@ -288,11 +288,14 @@ public class HomeController {
 
 
     @RequestMapping("/room/{wxid}")
+    @WxIdRequired(false)
     public String myroom(@PathVariable String wxid,
                          ModelMap map) {
         wxid = new String(StringUtils.b32decode(wxid));
         final User user = userService.retrive(wxid);
 
+        if (user == null)
+            return "redirect:/room";
 
         final WebexUser webexUser = new WebexUser();
         webexUser.setWebexSiteName(user.getWbxSiteUrl());
