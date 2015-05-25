@@ -65,6 +65,7 @@ input[type=submit], button, .button {
     border-radius: 3em;
     padding: .5em 2em;
     display: inline-block;
+    text-decoration: none;
 }
 
 .btn-group {

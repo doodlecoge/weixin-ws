@@ -6,17 +6,20 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    String cp = request.getContextPath();
+%>
 <html>
 <head>
     <title>绑定成功</title>
 </head>
 <body>
 <p>
-    <input type="submit" value="预约会议">
+    <a class="button" href="<%=cp%>/schedule">预约会议</a>
 </p>
 
 <p>
-    <input type="submit" value="我的会议室">
+    <a class="button" href="<%=cp%>/room">我的会议室</a>
 </p>
 </body>
 </html>
