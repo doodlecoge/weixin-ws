@@ -10,14 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import wang.huaichao.misc.WxWsException;
+import wang.huaichao.utils.StringUtils;
+import wang.huaichao.web.WxIdRequired;
 import wang.huaichao.web.model.User;
 import wang.huaichao.web.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by Administrator on 2015/5/28.
@@ -25,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class JoinMeetingController {
     private Logger log = LoggerFactory.getLogger(JoinMeetingController.class);
+
     @Autowired
     private UserService userService;
 
@@ -32,6 +34,32 @@ public class JoinMeetingController {
     @RequestMapping("/join")
     public String join() {
         return "join";
+    }
+
+    @RequestMapping(value = "/join", method = RequestMethod.POST)
+    public String join(@RequestParam String key,
+                       HttpServletRequest request,
+                       ModelMap map) throws WebExApiException {
+        final HttpSession session = request.getSession();
+        final Object wxid = session.getAttribute("wxid");
+        return "redirect:/join/" + key + "/" +
+                StringUtils.b32encode(wxid.toString().getBytes());
+    }
+
+    @RequestMapping("/join/{key}/{wxid}")
+    @WxIdRequired(false)
+    public String join(@PathVariable String key,
+                       @PathVariable String wxid,
+                       ModelMap map) throws WebExApiException {
+        wxid = new String(StringUtils.b32decode(wxid));
+        final User user = userService.retrive(wxid);
+        final WebexUser webexUser = new WebexUser();
+        webexUser.setWebexId(user.getWbxUsername());
+        webexUser.setWebexPassword(user.getWbxPassword());
+        webexUser.setWebexSiteName(user.getWbxSiteUrl());
+        final String joinUrl = _getJoinUrl(key, webexUser);
+        map.put("joinUrl", joinUrl);
+        return "join-itmd";
     }
 
     @RequestMapping(

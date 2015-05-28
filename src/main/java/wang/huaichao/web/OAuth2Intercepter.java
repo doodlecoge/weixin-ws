@@ -27,17 +27,19 @@ public class OAuth2Intercepter extends HandlerInterceptorAdapter {
 
         if (handler instanceof ResourceHttpRequestHandler) return true;
 
-        HandlerMethod handler2 = (HandlerMethod) handler;
-        WxIdRequired required = handler2.getMethodAnnotation(WxIdRequired.class);
-        if (required != null && required.value() == false)
-            return true;
-
         final HttpSession session = request.getSession();
 
         // developing
         if (AppContext.isDeveloping()) {
             session.setAttribute("wxid", "fake-wxid-0123456789");
         }
+
+        HandlerMethod handler2 = (HandlerMethod) handler;
+        WxIdRequired required = handler2.getMethodAnnotation(WxIdRequired.class);
+        if (required != null && required.value() == false)
+            return true;
+
+
 
         if (session.getAttribute("wxid") != null) {
             User user = userService.retrive(

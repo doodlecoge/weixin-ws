@@ -10,10 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import wang.huaichao.utils.StringUtils;
+import wang.huaichao.web.WxIdRequired;
 import wang.huaichao.web.model.User;
 import wang.huaichao.web.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.swing.*;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +29,7 @@ public class ListMeetingController {
     @Autowired
     private UserService userService;
 
+    @WxIdRequired(false)
     @RequestMapping("/list")
     public String list(HttpServletRequest request, ModelMap map) throws WebExApiException {
         final User user = userService.retrive(request);
@@ -40,6 +44,9 @@ public class ListMeetingController {
                     = result.getSessions();
             map.put("sessions", sessions);
 
+            final HttpSession session = request.getSession();
+            final Object wxid = session.getAttribute("wxid");
+            map.put("wxid", StringUtils.b32encode(wxid.toString().getBytes()));
         }
 
         return "list";

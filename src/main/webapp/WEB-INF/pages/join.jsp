@@ -27,18 +27,18 @@
 <body>
 <h1>${title}</h1>
 
-<form action="<%=cp%>/save_join" method="post">
+<form action="<%=cp%>/join" method="post">
     <p>
         <label>${no}</label>
         <br/>
-        <input type="text" name="meetingNo">
+        <input type="text" name="key">
     </p>
 
-    <p>
-        <label>${pwd}</label>
-        <br/>
-        <input type="text" name="meetingPwd">
-    </p>
+    <%--<p>--%>
+        <%--<label>${pwd}</label>--%>
+        <%--<br/>--%>
+        <%--<input type="text" name="pwd">--%>
+    <%--</p>--%>
 
     <p>
         <label>&nbsp;</label>
