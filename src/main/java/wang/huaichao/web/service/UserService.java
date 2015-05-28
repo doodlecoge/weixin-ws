@@ -7,6 +7,8 @@ import wang.huaichao.misc.WxWsException;
 import wang.huaichao.web.dao.UserDao;
 import wang.huaichao.web.model.User;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -44,6 +46,16 @@ public class UserService {
 
     public User retrive(String wxId) {
         return userDao.retrive(wxId);
+    }
+
+    public User retrive(HttpServletRequest request) {
+        final HttpSession session = request.getSession();
+        final Object wxid = session.getAttribute("wxid");
+        final User user = userDao.retrive(wxid.toString());
+        if (user == null) {
+            throw new WxWsException("user not found:" + wxid);
+        }
+        return user;
     }
 
     public void update(String wxId, String fullName,

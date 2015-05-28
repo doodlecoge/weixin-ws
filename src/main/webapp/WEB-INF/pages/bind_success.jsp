@@ -12,6 +12,14 @@
 <html>
 <head>
     <title>绑定成功</title>
+    <style type="text/css">
+        footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+    </style>
 </head>
 <body>
 <p>

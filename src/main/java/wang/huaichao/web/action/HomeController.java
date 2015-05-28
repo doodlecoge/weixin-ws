@@ -51,8 +51,7 @@ public class HomeController {
     private UserService userService;
 
     @ResponseBody
-    @RequestMapping(value = "/index",
-            produces = "text/xml; charset=UTF-8")
+    @RequestMapping(value = "/index", produces = "text/xml; charset=UTF-8")
     @WxIdRequired(false)
     public String index(@RequestParam String msg_signature,
                         @RequestParam String timestamp,
@@ -148,121 +147,9 @@ public class HomeController {
     }
 
 
-    @RequestMapping("/schedule")
-    public String schedule() {
-        return "schedule";
-    }
-
-    @RequestMapping(
-            value = "/save_schedule",
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-//    @ResponseBody
-    public String saveSchedule(
-            HttpServletRequest request,
-            @RequestParam String subject,
-            @RequestParam String password,
-            @RequestParam String confirmp,
-            @RequestParam String startDate,
-            @RequestParam String startTime) {
-
-        if (!confirmp.equals(password))
-            throw new WxWsException("two passwords not equal");
-
-        if (subject.isEmpty())
-            throw new WxWsException("subject is empty");
-
-        if (startDate.isEmpty() || startTime.isEmpty())
-            throw new WxWsException("datetime is empty");
-
-        final User user = _getUser(request);
-
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Date date = null;
-        try {
-            date = df.parse(startDate + " " + startTime);
-        } catch (ParseException e) {
-            date = new Date();
-        }
-
-        WebexUser webexUser = new WebexUser();
-        webexUser.setWebexId(user.getWbxUsername());
-        webexUser.setWebexPassword(user.getWbxPassword());
-        webexUser.setWebexSiteName(user.getWbxSiteUrl());
-
-        CreateMeetingResult createMeetingResult;
-        try {
-            createMeetingResult = WebExClientBuilder
-                    .getHostClientBuilder(webexUser).build()
-                    .createMeeting(subject, password, date);
-
-        } catch (WebExApiException e) {
-            throw new WxWsException("error while scheduling meeting", e);
-        }
-
-        if (!createMeetingResult.isSuccess())
-            new WxWsException("schedule meeting failed");
-
-//        return GsonUtils.buildSuccessResponse();
-
-        return "redirect:/list";
-    }
-
-    @RequestMapping("/join")
-    public String join() {
-        return "join";
-    }
-
-    @RequestMapping(
-            value = "/save_join",
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    @ResponseBody
-    public String saveJoin(
-            HttpServletRequest request,
-            @RequestParam String meetingNo,
-            @RequestParam(required = false) String meetingPwd,
-            ModelMap map) {
-
-        final User user = _getUser(request);
-        final WebexUser webexUser = new WebexUser();
-        webexUser.setWebexId(user.getWbxUsername());
-        webexUser.setWebexPassword(user.getWbxPassword());
-        webexUser.setWebexSiteName(user.getWbxSiteUrl());
-
-        try {
-            String joinUrl = _getJoinUrl(meetingNo, webexUser);
-            log.debug("join url: " + joinUrl);
-            map.put("joinUrl", joinUrl);
-            return "join-itmd";
-        } catch (WebExApiException e) {
-            throw new WxWsException("get join url failed", e);
-        }
-    }
-
-    private User _getUser(HttpServletRequest request) {
-        final HttpSession session = request.getSession();
-        final Object wxid = session.getAttribute("wxid");
-        final User user = userService.retrive(wxid.toString());
-        if (user == null) {
-            throw new WxWsException("user not found:" + wxid);
-        }
-        return user;
-    }
 
 
-    private String _getJoinUrl(String meetingKey, WebexUser user)
-            throws WebExApiException {
-        GetJoinMeetingUrlResult result = WebExClientBuilder
-                .getHostClientBuilder(user).build()
-                .getJoinUrl(meetingKey);
-        return result.getJoinUrl();
-    }
 
-    @RequestMapping("/list")
-    public String list() {
-        return "list";
-    }
 
 
     @RequestMapping("/share")
@@ -278,47 +165,5 @@ public class HomeController {
     }
 
 
-    @RequestMapping("/room")
-    public String myroom(HttpServletRequest request) {
-        final HttpSession session = request.getSession();
-        final Object wxid = session.getAttribute("wxid");
-        return "redirect:/room/"
-                + StringUtils.b32encode(wxid.toString().getBytes());
-    }
 
-
-    @RequestMapping("/room/{wxid}")
-    @WxIdRequired(false)
-    public String myroom(@PathVariable String wxid,
-                         ModelMap map) throws IOException {
-        wxid = new String(StringUtils.b32decode(wxid));
-        final User user = userService.retrive(wxid);
-
-        if (user == null)
-            return "redirect:/room";
-
-        final WebexUser webexUser = new WebexUser();
-        webexUser.setWebexSiteName(user.getWbxSiteUrl());
-        webexUser.setWebexId(user.getWbxUsername());
-        webexUser.setWebexPassword(user.getWbxPassword());
-
-        GetUserResult result = null;
-        try {
-            result = WebExClientBuilder
-                    .getHostClientBuilder(webexUser).build()
-                    .getUser(user.getWbxUsername());
-        } catch (WebExApiException e) {
-            throw new WxWsException("获取信账户信息失败", e);
-        }
-
-        if (result.isSuccess()) {
-            final String roomUrl = result.getPersonalMeetingRoomURL();
-            log.debug("personal room url: " + roomUrl);
-            map.put("roomUrl", roomUrl);
-            map.put("avatar",WeiXinUtils.getUserAvatar(wxid));
-            return "room";
-        } else {
-            throw new WxWsException("get personal meeting room failed");
-        }
-    }
 }

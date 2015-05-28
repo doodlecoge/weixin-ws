@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
     String cp = request.getContextPath();
@@ -22,6 +23,21 @@
     </style>
 </head>
 <body>
+
+<ul>
+    <c:forEach var="session" items="${sessions}">
+        <li>
+            <a href="<%=cp%>/list/${session.sessionKey}">
+                    ${session.topic}
+            </a>,
+            ${session.status},
+            ${session.hostWebExId},
+            ${session.startTime},
+            ${session.durationInMinutes}
+
+        </li>
+    </c:forEach>
+</ul>
 <jsp:include page="bottom-bar.jsp"></jsp:include>
 </body>
 </html>

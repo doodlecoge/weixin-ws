@@ -20,7 +20,7 @@
     }
 
     input[type=submit], button, .button {
-        padding: .8em 0;
+        padding: 1em 0;
         width: 100%;
         text-align: center;
     }
