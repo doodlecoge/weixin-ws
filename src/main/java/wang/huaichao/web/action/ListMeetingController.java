@@ -37,7 +37,7 @@ public class ListMeetingController {
 
         final ListSummarySessionResult result = WebExClientBuilder
                 .getHostClientBuilder(wbxUser).build()
-                .listSummarySession();
+                .listSummarySession(new Date());
 
         if (result.isSuccess()) {
             final List<ListSummarySessionResult.Session> sessions

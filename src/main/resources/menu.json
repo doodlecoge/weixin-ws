@@ -2,8 +2,8 @@
   "button": [
     {
       "type": "view",
-      "name": "预定会议",
-      "url": "http://skytechcloud.net/weixin/schedule"
+      "name": "加入会议",
+      "url": "http://skytechcloud.net/weixin/join"
     },
     {
       "type": "view",
@@ -22,6 +22,16 @@
           "type": "view",
           "name": "我的账号",
           "url": "http://skytechcloud.net/weixin/user/profile"
+        },
+        {
+          "type": "view",
+          "name": "会议列表",
+          "url": "http://skytechcloud.net/weixin/list"
+        },
+        {
+          "type": "view",
+          "name": "预约会议",
+          "url": "http://skytechcloud.net/weixin/schedule"
         }
       ]
     }
