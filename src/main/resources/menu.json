@@ -3,17 +3,27 @@
     {
       "type": "view",
       "name": "预定会议",
-      "url": "http://im.cloudtm.net/weixin/schedule"
+      "url": "http://skytechcloud.net/weixin/schedule"
     },
     {
       "type": "view",
       "name": "我的会议室",
-      "url": "http://im.cloudtm.net/weixin/room"
+      "url": "http://skytechcloud.net/weixin/room"
     },
     {
-      "type": "view",
-      "name": "帮助",
-      "url": "https://support.webex.com/MyAccountWeb/supporthome.do"
+      "name": "其他",
+      "sub_button": [
+        {
+          "type": "view",
+          "name": "帮助",
+          "url": "https://support.webex.com/MyAccountWeb/supporthome.do"
+        },
+        {
+          "type": "view",
+          "name": "我的账号",
+          "url": "http://skytechcloud.net/weixin/user/profile"
+        }
+      ]
     }
   ]
 }

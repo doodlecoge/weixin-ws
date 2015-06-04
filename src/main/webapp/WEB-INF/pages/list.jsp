@@ -29,16 +29,13 @@
         }
 
         dl.meeting-list {
-            line-height: 28px;
             outline: none;
         }
 
         dl.meeting-list dt {
             border-bottom: 1px solid silver;
-            height: 40px;
-            line-height: 40px;
             background: #eee;
-            padding-left: 10px;
+            padding: 1em 0 1em 10px;
         }
 
         dl.meeting-list dd {

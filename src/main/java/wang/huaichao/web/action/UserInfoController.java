@@ -19,9 +19,11 @@ import wang.huaichao.misc.WxWsException;
 import wang.huaichao.web.WxIdRequired;
 import wang.huaichao.web.model.User;
 import wang.huaichao.web.service.UserService;
+import wang.huaichao.wx.WeiXinUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -37,14 +39,13 @@ public class UserInfoController {
     private UserService userService;
 
     @RequestMapping("/profile")
-    public String index(HttpServletRequest request, ModelMap map) {
-        final HttpSession session = request.getSession();
-        final Object userid = session.getAttribute("wxid");
+    public String index(HttpServletRequest request, ModelMap map) throws IOException {
+        final User user = userService.retrive(request);
 
-        map.put(
-                "wxid",
-                userid.toString().isEmpty() ? null : userid.toString()
-        );
+        map.put("wxid", user.getWxId());
+        map.put("user", user);
+        map.put("avatar", WeiXinUtils.getUserAvatar(user.getWxId()));
+
         return "user/profile";
     }
 

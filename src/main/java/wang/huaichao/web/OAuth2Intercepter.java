@@ -1,5 +1,7 @@
 package wang.huaichao.web;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -17,6 +19,8 @@ import java.util.Calendar;
  * Created by Administrator on 2015/5/15.
  */
 public class OAuth2Intercepter extends HandlerInterceptorAdapter {
+    private static final Logger log =
+            LoggerFactory.getLogger(OAuth2Intercepter.class);
     @Autowired
     private UserService userService;
 
@@ -38,7 +42,6 @@ public class OAuth2Intercepter extends HandlerInterceptorAdapter {
         WxIdRequired required = handler2.getMethodAnnotation(WxIdRequired.class);
         if (required != null && required.value() == false)
             return true;
-
 
 
         if (session.getAttribute("wxid") != null) {
@@ -65,9 +68,14 @@ public class OAuth2Intercepter extends HandlerInterceptorAdapter {
 //            reqUrl += "?" + param;
 //        }
 
+        // @formatter:off
         String reqUrl = AppInitializer.WeiXinConfig.getString("app.base_url")
                 + request.getContextPath()
                 + request.getServletPath();
+        // @formatter:on
+
+        log.debug("*** context path: " + request.getContextPath());
+        log.debug("*** servlet path:" + request.getServletPath());
 
         response.sendRedirect(
                 request.getContextPath()
