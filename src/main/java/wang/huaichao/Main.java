@@ -14,6 +14,7 @@ import wang.huaichao.utils.AccessTonkenManager;
 import wang.huaichao.utils.FileUtils;
 import wang.huaichao.utils.GsonUtils;
 import wang.huaichao.utils.XmlUtils;
+import wang.huaichao.web.model.DateTime;
 import wang.huaichao.wx.*;
 
 
@@ -30,6 +31,8 @@ import javax.xml.xpath.*;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.TreeMap;
 
 /**
  * Created by Administrator on 2015/5/5.
@@ -60,16 +63,28 @@ public class Main {
 //        System.out.println(instance instanceof WeiXinEventMessage);
 
 
-        String x = "abcdefg";
-        System.out.println(
-                x.substring(0,x.indexOf("."))
+        final TreeMap<DateTime, String> tm = new TreeMap<>();
+
+        final Calendar cal = Calendar.getInstance();
+
+        DateTime dt = new DateTime(
+                new Date("2015/08/05 06:35")
         );
+        tm.put(dt, "xxxx1");
 
+        dt = new DateTime(
+                new Date("2015/07/04 17:01")
+        );
+        tm.put(dt, "xxxx3");
+
+        dt = new DateTime(
+                new Date("2015/07/22 06:06")
+        );
+        tm.put(dt, "xxxx2");
+
+
+        System.out.println(tm);
     }
-
-
-
-
 
 
 }

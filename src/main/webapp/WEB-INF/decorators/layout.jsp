@@ -36,13 +36,13 @@
     <link rel="stylesheet" charset="utf-8"
           href="<%=cp%>/css/site-rsp.css?t=<%=ts%>">
     <link rel="stylesheet" charset="utf-8"
-          href="<%=cp%>/css/font-awesome.min.css">
+          href="<%=cp%>/css/font-awesome.min.css?t=<%=ts%>">
     <script type="text/javascript"
-            src="<%=cp%>/js/jquery-1.11.3.min.js"></script>
-    <script type="text/javascript"
-            src="<%=cp%>/js/jquery-ui-core.js"></script>
-    <script type="text/javascript"
-            src="<%=cp%>/js/xhr-form.js"></script>
+            src="<%=cp%>/js/jquery-1.11.3.min.js?t=<%=ts%>"></script>
+    <%--<script type="text/javascript"--%>
+            <%--src="<%=cp%>/js/jquery-ui-core.js?t=<%=ts%>"></script>--%>
+    <%--<script type="text/javascript"--%>
+            <%--src="<%=cp%>/js/xhr-form.js?t=<%=ts%>"></script>--%>
     <decorator:head/>
 </head>
 <body>

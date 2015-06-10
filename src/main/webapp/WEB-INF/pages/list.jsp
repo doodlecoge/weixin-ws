@@ -19,27 +19,35 @@
 <spring:message code="meeting.status" var="status"/>
 <spring:message code="meeting.duration" var="duration"/>
 <spring:message code="join.title" var="join"/>
+<spring:message code="list.key" var="kkk"/>
 
 <html>
 <head>
     <title>${title}</title>
     <style type="text/css">
+        @media screen and (max-width: 600px) {
+            .c {
+                padding: 0;
+            }
+        }
+
         footer {
             display: none;
         }
 
         dl.meeting-list {
             outline: none;
+            margin: 0;
         }
 
         dl.meeting-list dt {
             border-bottom: 1px solid silver;
             background: #eee;
-            padding: 1em 0 1em 10px;
+            padding: .6em 1em;
         }
 
         dl.meeting-list dd {
-            border: 1px dotted silver;
+            border: 1px dashed silver;
             border-top: 0;
             margin: 0 0 10px 0;
             padding: 10px 0 10px 10px;
@@ -50,13 +58,19 @@
         table tr td:first-child {
             font-weight: bold;
         }
+
+        .topic {
+            font-size: 1.5em;
+            font-weight: bold;
+            display: block;
+        }
     </style>
 
     <script type="text/javascript">
         $(function () {
             $('dl.meeting-list').on('click', function (e) {
-                if (e.target.nodeName.toLowerCase() != 'dt') return;
-                var n = $(e.target).next();
+                var el = $(e.target).closest('dt');
+                var n = el.next();
                 if (n.is(':visible')) {
                     n.slideUp();
                 } else {
@@ -69,37 +83,27 @@
 <body>
 
 <dl class="meeting-list">
-    <c:forEach var="session" items="${sessions}">
+    <c:forEach var="entry" items="${sessions}">
         <dt>
-                ${session.topic}
+            <span>
+                    ${entry.key.weekDay}
+            </span>
+            <span style="float: right;">
+                    ${entry.key.dateString}
+            </span>
         </dt>
         <dd>
-            <table>
-                <tr>
-                    <td>${status} </td>
-                    <td>${session.status}</td>
-                </tr>
-                <tr>
-                    <td>${host} </td>
-                    <td>${session.hostWebExId}</td>
-                </tr>
-                <tr>
-                    <td>${startTime} </td>
-                    <td>
-                        <fmt:formatDate value="${session.startTime}"
-                                        pattern="yyyy-MM-dd HH:mm"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>${duration} </td>
-                    <td>${session.durationInMinutes}</td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <a href="<%=cp%>/join/${session.sessionKey}/${wxid}">${join}</a>
-                    </td>
-                </tr>
-            </table>
+            <c:forEach var="meeting" items="${entry.value}">
+                <span class="topic">${meeting.topic}</span>
+                <span>${meeting.duration}</span>
+                <br/>
+                <span>${meeting.host}</span>
+                <br/>
+                <span>${meeting.meetingNO}</span>
+                <br/>
+                <a href="<%=cp%>/join/${meeting.sessionKey}/${wxid}">${join}</a>
+                <br/>
+            </c:forEach>
         </dd>
     </c:forEach>
 </dl>
