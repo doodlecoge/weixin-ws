@@ -14,6 +14,7 @@ import wang.huaichao.utils.AccessTonkenManager;
 import wang.huaichao.utils.FileUtils;
 import wang.huaichao.utils.GsonUtils;
 import wang.huaichao.utils.XmlUtils;
+import wang.huaichao.web.AppInitializer;
 import wang.huaichao.web.model.DateTime;
 import wang.huaichao.wx.*;
 
@@ -30,60 +31,45 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.xpath.*;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * Created by Administrator on 2015/5/5.
  */
 public class Main {
+
+    public static final String sPostMsgUrl = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=";
+
     public static void main(String[] args) throws Exception {
-//        String xml = "<xml><ToUserName><![CDATA[wx608f8974cefe0d82]]></ToUserName>" +
-//                "<FromUserName><![CDATA[huaichao.wang]]></FromUserName>" +
-//                "<CreateTime>1430875398</CreateTime>" +
-//                "<MsgType><![CDATA[text]]></MsgType>" +
-//                "<Content><![CDATA[ABC]]></Content>" +
-//                "<MsgId>4389487259758362639</MsgId>" +
-//                "<AgentID>10</AgentID>" +
-//                "</xml>";
+        String msg = "hello joe! http://www.tcl.com";
+        String who = "junz@tcl.com";
+        final String sJson = "{\n" +
+                "    \"touser\": \""+who+"\",\n" +
+                "    \"msgtype\": \"text\",\n" +
+                "    \"agentid\": \"2\",\n" +
+                "    \"text\": {\n" +
+                "        \"content\": \""+msg+"\"\n" +
+                "    },\n" +
+                "    \"safe\": \"0\"\n" +
+                "}";
+
+        final Config config = ConfigLoader.loadFromClassPath("/weixin-ws.properties");
+        final String sCorpID = config.getString("wx.corp_id");
+        final String sSecret = config.getString("wx.secret");
+        String sAccessToken = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=" + sCorpID + "&corpsecret=" + sSecret;
+
+        final HttpUtils httpUtils = new HttpUtils();
+        String accessToken = httpUtils.get(sAccessToken);
+        accessToken = GsonUtils.j20(accessToken, AccessToken.class).getAccessToken();
+
+        System.out.println(accessToken);
 
 
-//        String xml = " <xml><ToUserName><![CDATA[wx608f8974cefe0d82]]></ToUserName>" +
-//                "<FromUserName><![CDATA[huaichao.wang]]></FromUserName>" +
-//                "<CreateTime>1430880582</CreateTime>" +
-//                "<MsgType><![CDATA[event]]></MsgType>" +
-//                "<AgentID>10</AgentID>" +
-//                "<Event><![CDATA[click]]></Event>" +
-//                "<EventKey><![CDATA[V1001_TODAY_MUSIC]]></EventKey>" +
-//                "</xml>";
-//
-//
-//        final WeiXinMessageBase instance = WeiXinMessageBase.getInstance(xml);
-//        System.out.println(instance instanceof WeiXinEventMessage);
+
+        final String post = httpUtils.post(sPostMsgUrl + accessToken, sJson);
 
 
-        final TreeMap<DateTime, String> tm = new TreeMap<>();
-
-        final Calendar cal = Calendar.getInstance();
-
-        DateTime dt = new DateTime(
-                new Date("2015/08/05 06:35")
-        );
-        tm.put(dt, "xxxx1");
-
-        dt = new DateTime(
-                new Date("2015/07/04 17:01")
-        );
-        tm.put(dt, "xxxx3");
-
-        dt = new DateTime(
-                new Date("2015/07/22 06:06")
-        );
-        tm.put(dt, "xxxx2");
-
-
-        System.out.println(tm);
+        System.out.println(post);
     }
 
 

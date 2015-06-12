@@ -6,7 +6,7 @@ body {
     margin: 0;
 
 }
-
+/*${ts}*/
 body, input, textarea, keygen, select, button {
     font-size: 16px;
     font-family: "Microsoft YaHei", "微软雅黑";
@@ -19,7 +19,7 @@ body, input, textarea, keygen, select, button {
 }
 
 .logo {
-    height: 60px;
+    height: 80px;
     vertical-align: top;
 }
 
@@ -31,7 +31,6 @@ body, input, textarea, keygen, select, button {
 header {
     padding: 10px 0;
     border-bottom: 1px solid #aaa;
-    background: #e8e8e8;
 }
 
 footer {
