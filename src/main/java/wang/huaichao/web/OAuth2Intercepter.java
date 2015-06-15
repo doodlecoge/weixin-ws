@@ -43,11 +43,16 @@ public class OAuth2Intercepter extends HandlerInterceptorAdapter {
         if (required != null && required.value() == false)
             return true;
 
+        log.debug("@@@ request url:  " + request.getRequestURI());
+        log.debug("@@@ context path: " + request.getContextPath());
+        log.debug("@@@ servlet path: " + request.getServletPath());
 
         if (session.getAttribute("wxid") != null) {
             User user = userService.retrive(
                     session.getAttribute("wxid").toString()
             );
+
+            log.debug("@@@ wxid: " + session.getAttribute("wxid").toString());
 
             if (user == null) {
                 response.sendRedirect(
@@ -73,9 +78,6 @@ public class OAuth2Intercepter extends HandlerInterceptorAdapter {
                 + request.getContextPath()
                 + request.getServletPath();
         // @formatter:on
-
-        log.debug("*** context path: " + request.getContextPath());
-        log.debug("*** servlet path:" + request.getServletPath());
 
         response.sendRedirect(
                 request.getContextPath()

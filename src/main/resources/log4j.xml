@@ -13,7 +13,7 @@
 
     <appender name="fileAppender" class="org.apache.log4j.RollingFileAppender">
         <param name="append" value="false"/>
-        <param name="file" value="${log.file}"/>
+        <param name="file" value="${log.dir}${log.file}"/>
         <param name="encoding" value="UTF-8"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern"

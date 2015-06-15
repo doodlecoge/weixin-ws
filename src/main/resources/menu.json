@@ -3,12 +3,12 @@
     {
       "type": "view",
       "name": "加入会议",
-      "url": "http://skytechcloud.net/weixin/join"
+      "url": "http://im.sky-techcloud.com/weixin/join"
     },
     {
       "type": "view",
       "name": "我的会议室",
-      "url": "http://skytechcloud.net/weixin/room"
+      "url": "http://im.sky-techcloud.com/weixin/room"
     },
     {
       "name": "其他",
@@ -21,17 +21,17 @@
         {
           "type": "view",
           "name": "我的账号",
-          "url": "http://skytechcloud.net/weixin/user/profile"
+          "url": "http://im.sky-techcloud.com/weixin/user/profile"
         },
         {
           "type": "view",
           "name": "会议列表",
-          "url": "http://skytechcloud.net/weixin/list"
+          "url": "http://im.sky-techcloud.com/weixin/list"
         },
         {
           "type": "view",
           "name": "预约会议",
-          "url": "http://skytechcloud.net/weixin/schedule"
+          "url": "http://im.sky-techcloud.com/weixin/schedule"
         }
       ]
     }

@@ -16,6 +16,7 @@
         <config.location></config.location>
         <config.filename>weixin-ws.properties</config.filename>
         <log.level>info</log.level>
+        <log.dir></log.dir>
         <log.file>weixin-ws.log</log.file>
         <ts>${maven.build.timestamp}</ts>
         <maven.build.timestamp.format>yyyyMMddHHmmss
@@ -237,6 +238,7 @@
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
+                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
 

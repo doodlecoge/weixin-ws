@@ -32,7 +32,6 @@ public class ListMeetingController {
     @Autowired
     private UserService userService;
 
-    @WxIdRequired(false)
     @RequestMapping("/list")
     public String list(HttpServletRequest request, ModelMap map) throws WebExApiException {
         final User user = userService.retrive(request);

@@ -10,10 +10,7 @@ import org.xml.sax.SAXException;
 import wang.huaichao.misc.Config;
 import wang.huaichao.misc.ConfigLoader;
 import wang.huaichao.net.HttpUtils;
-import wang.huaichao.utils.AccessTonkenManager;
-import wang.huaichao.utils.FileUtils;
-import wang.huaichao.utils.GsonUtils;
-import wang.huaichao.utils.XmlUtils;
+import wang.huaichao.utils.*;
 import wang.huaichao.web.AppInitializer;
 import wang.huaichao.web.model.DateTime;
 import wang.huaichao.wx.*;
@@ -41,35 +38,36 @@ public class Main {
     public static final String sPostMsgUrl = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=";
 
     public static void main(String[] args) throws Exception {
-        String msg = "hello joe! http://www.tcl.com";
-        String who = "junz@tcl.com";
-        final String sJson = "{\n" +
-                "    \"touser\": \""+who+"\",\n" +
-                "    \"msgtype\": \"text\",\n" +
-                "    \"agentid\": \"2\",\n" +
-                "    \"text\": {\n" +
-                "        \"content\": \""+msg+"\"\n" +
-                "    },\n" +
-                "    \"safe\": \"0\"\n" +
-                "}";
+//        String msg = "hello joe! http://www.tcl.com";
+//        String who = "junz@tcl.com";
+//        final String sJson = "{\n" +
+//                "    \"touser\": \""+who+"\",\n" +
+//                "    \"msgtype\": \"text\",\n" +
+//                "    \"agentid\": \"2\",\n" +
+//                "    \"text\": {\n" +
+//                "        \"content\": \""+msg+"\"\n" +
+//                "    },\n" +
+//                "    \"safe\": \"0\"\n" +
+//                "}";
+//
+//        final Config config = ConfigLoader.loadFromClassPath("/weixin-ws.properties");
+//        final String sCorpID = config.getString("wx.corp_id");
+//        final String sSecret = config.getString("wx.secret");
+//        String sAccessToken = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=" + sCorpID + "&corpsecret=" + sSecret;
+//
+//        final HttpUtils httpUtils = new HttpUtils();
+//        String accessToken = httpUtils.get(sAccessToken);
+//        accessToken = GsonUtils.j20(accessToken, AccessToken.class).getAccessToken();
+//
+//        System.out.println(accessToken);
+//
+//
+//
+//        final String post = httpUtils.post(sPostMsgUrl + accessToken, sJson);
+//
+//
+//        System.out.println(post);
 
-        final Config config = ConfigLoader.loadFromClassPath("/weixin-ws.properties");
-        final String sCorpID = config.getString("wx.corp_id");
-        final String sSecret = config.getString("wx.secret");
-        String sAccessToken = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=" + sCorpID + "&corpsecret=" + sSecret;
-
-        final HttpUtils httpUtils = new HttpUtils();
-        String accessToken = httpUtils.get(sAccessToken);
-        accessToken = GsonUtils.j20(accessToken, AccessToken.class).getAccessToken();
-
-        System.out.println(accessToken);
-
-
-
-        final String post = httpUtils.post(sPostMsgUrl + accessToken, sJson);
-
-
-        System.out.println(post);
     }
 
 
