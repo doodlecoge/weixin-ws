@@ -24,15 +24,7 @@
 
 
     <profiles>
-        <profile>
-            <id>deploy</id>
-            <properties>
-                <tomcat-manager-url>http://skytechcloud.net:8080/manager/text
-                </tomcat-manager-url>
-                <tomcat-username>tomcat</tomcat-username>
-                <tomcat-password>123456</tomcat-password>
-            </properties>
-        </profile>
+
     </profiles>
 
     <dependencies>
