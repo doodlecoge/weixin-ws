@@ -50,6 +50,7 @@
 <header>
     <div class="c">
         <img src="<%=cp%>/img/ketian-logo.png" class="logo"/>
+        <br/><%=ts%>
     </div>
 </header>
 <div id="content">

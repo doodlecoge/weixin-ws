@@ -147,23 +147,27 @@ public class HomeController {
     }
 
 
-
-
-
-
-
     @RequestMapping("/share")
     @WxIdRequired(false)
     public String share(ModelMap map) throws IOException, NoSuchAlgorithmException {
         String nonceStr = "2nDgiWM7gCxhL8v0";
-        final long ms = Calendar.getInstance().getTimeInMillis();
+        long ms = Calendar.getInstance().getTimeInMillis();
+        String signature = WeiXinUtils.getSignature(nonceStr, ms);
+        String appid = AppInitializer.WeiXinConfig.getString("wx.corp_id");
+
         map.put("nonceStr", nonceStr);
         map.put("timestamp", ms);
-        map.put("signature", WeiXinUtils.getSignature(nonceStr, ms));
-        map.put("appId", AppInitializer.WeiXinConfig.getString("wx.corp_id"));
+        map.put("signature", signature);
+        map.put("appId", appid);
+
+        log.debug("nonceStr: " + nonceStr);
+        log.debug("timestamp: " + ms);
+        log.debug("signature: " + signature);
+        log.debug("appId: " + appid);
+
+
         return "share";
     }
-
 
 
 }

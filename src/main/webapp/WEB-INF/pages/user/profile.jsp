@@ -11,6 +11,12 @@
 <%
     String cp = request.getContextPath();
 %>
+<spring:message code="profile.title" var="title"/>
+<spring:message code="profile.save" var="save"/>
+<spring:message code="bind.wxid" var="id"/>
+<spring:message code="bind.wbx.id" var="wbx_username"/>
+<spring:message code="bind.wbx.pwd" var="wbx_password"/>
+<spring:message code="bind.wbx.url" var="wbx_site_url"/>
 <html>
 <head>
     <title>${title}</title>
@@ -26,12 +32,7 @@
     </style>
 </head>
 <body>
-<spring:message code="prifile.title" var="title"/>
-<spring:message code="prifile.save" var="save"/>
-<spring:message code="bind.wxid" var="id"/>
-<spring:message code="bind.wbx.id" var="wbx_username"/>
-<spring:message code="bind.wbx.pwd" var="wbx_password"/>
-<spring:message code="bind.wbx.url" var="wbx_site_url"/>
+
 
 <h1>${title}</h1>
 

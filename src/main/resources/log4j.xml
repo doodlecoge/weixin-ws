@@ -21,11 +21,18 @@
         </layout>
     </appender>
 
+    <logger name="org.springframework">
+        <level value="warn"/>
+    </logger>
+
+    <logger name="org.hibernate">
+        <level value="warn"/>
+    </logger>
 
     <root>
         <level value="${log.level}"/>
-        <appender-ref ref="fileAppender"/>
         <appender-ref ref="consoleAppender"/>
+        <appender-ref ref="fileAppender"/>
     </root>
 
 </log4j:configuration>
